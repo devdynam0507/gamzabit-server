@@ -17,3 +17,8 @@ spring:
   sql:
     init:
       mode: always
+
+jwt:
+  token:
+    access-secret: xxx-access-secret
+    refresh-secret: xxx-refresh-secret

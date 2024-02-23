@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration;
 public class JwtConfiguration {
 
     @Bean
-    JwtProvider accessTokenProvider() {
-        return new JwtProvider( /* TODO: future remove */ "xxx-token-secret", JwtTokenType.Access);
+    JwtProvider accessTokenProvider(JwtSecretProperty jwtSecretProperty) {
+        return new JwtProvider(jwtSecretProperty.getAccessSecret(), JwtTokenType.Access);
     }
 
     @Bean
-    JwtProvider refreshTokenProvider() {
-        return new JwtProvider( /* TODO: future remove */ "xxx-token-secret", JwtTokenType.Refresh);
+    JwtProvider refreshTokenProvider(JwtSecretProperty jwtSecretProperty) {
+        return new JwtProvider(jwtSecretProperty.getRefreshSecret(), JwtTokenType.Refresh);
     }
 }

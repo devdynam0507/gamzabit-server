@@ -1,5 +1,7 @@
 package com.gamzabit.api.infrastructure.security.jwt;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,8 @@ public class JwtProvider {
     private final JwtTokenType tokenType;
 
     public JwtProvider(String tokenSecret, JwtTokenType tokenType) {
+        requireNonNull(tokenSecret, "tokenSecret");
+
         this.algorithm = Algorithm.HMAC256(tokenSecret);
         this.jwtVerifier = JWT.require(algorithm).build();
         this.tokenType = tokenType;
