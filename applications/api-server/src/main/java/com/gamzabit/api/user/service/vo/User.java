@@ -1,4 +1,4 @@
-package com.gamzabit.api.user.service.dto;
+package com.gamzabit.api.user.service.vo;
 
 import java.time.LocalDateTime;
 
