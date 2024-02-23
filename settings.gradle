@@ -1,0 +1,6 @@
+rootProject.name = 'gamazabit-server'
+include 'applications'
+include 'applications:order-matcing-server'
+include 'applications:api-server'
+findProject(':applications:api-server')?.name = 'api-server'
+
