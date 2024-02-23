@@ -3,6 +3,7 @@ package com.gamzabit.api.user.domain;
 import java.time.LocalDateTime;
 
 import com.gamzabit.api.common.domain.EntityBase;
+import com.gamzabit.api.user.service.dto.User;
 import com.gamzabit.api.user.service.vo.UserCreationVO;
 
 import jakarta.persistence.Entity;
@@ -45,5 +46,9 @@ public class UserEntity extends EntityBase {
             .password(userCreationVO.password())
             .nickname(userCreationVO.nickname())
             .build();
+    }
+
+    public User toUser() {
+        return new User(id, email, password, nickname, deleted, deletedAt, getCreatedAt());
     }
 }
