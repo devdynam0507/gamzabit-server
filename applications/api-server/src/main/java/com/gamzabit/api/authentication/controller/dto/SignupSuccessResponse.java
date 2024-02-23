@@ -3,7 +3,7 @@ package com.gamzabit.api.authentication.controller.dto;
 import lombok.Data;
 
 @Data
-public class SignupRequest {
+public class SignupSuccessResponse {
 
-    private String email, password, nickname;
+    private final String email, nickname;
 }
