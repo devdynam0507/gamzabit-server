@@ -10,6 +10,7 @@ import com.gamzabit.api.infrastructure.security.jwt.JwtStrategy;
 import com.gamzabit.api.infrastructure.security.jwt.JwtTokenType;
 import com.gamzabit.api.user.exception.UserAlreadyExistsException;
 import com.gamzabit.api.user.service.UserService;
+import com.gamzabit.api.user.service.assets.UserAssetSynchronizer;
 import com.gamzabit.api.user.service.dto.UserCreation;
 import com.gamzabit.api.user.service.vo.User;
 
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationService {
 
     private final UserService userService;
+    private final UserAssetSynchronizer userAssetSynchronizer;
     private final PasswordEncoder passwordEncoder;
     private final JwtStrategy jwtStrategy;
     private static final long accessTokenExpired = 3600 * 24 * 1000;
@@ -44,6 +46,7 @@ public class AuthenticationService {
             }
             JwtProvider accessTokenProvider = jwtStrategy.getProvider(JwtTokenType.Access);
             String accessToken = accessTokenProvider.encrypt("id", user.id(), accessTokenExpired);
+            userAssetSynchronizer.syncUserAssets(user.id());
 
             return new SigninResponse(email, accessToken);
         } catch (Throwable e) {
