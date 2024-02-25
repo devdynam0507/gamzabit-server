@@ -1,10 +1,13 @@
 package com.gamzabit.api.user.service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gamzabit.api.user.domain.UserAssetEntity;
+import com.gamzabit.api.user.domain.UserAssetRepository;
 import com.gamzabit.api.user.domain.UserEntity;
 import com.gamzabit.api.user.domain.UserRepository;
 import com.gamzabit.api.user.exception.UserAlreadyExistsException;
@@ -19,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserAssetRepository userAssetRepository;
 
     public User createUser(UserCreation userCreation) {
         String email = userCreation.email();
@@ -27,7 +31,14 @@ public class UserService {
             throw new UserAlreadyExistsException(email);
         }
         UserEntity newUser = UserEntity.toUser(userCreation);
-        userRepository.save(newUser);
+        UserEntity createdUser = userRepository.save(newUser);
+        UserAssetEntity userAsset = UserAssetEntity.builder()
+            .user(createdUser)
+            .assetName("krw")
+            .assetDisplayName("원")
+            .amount(BigDecimal.valueOf(100000))
+            .build();
+        userAssetRepository.save(userAsset);
 
         return newUser.toUser();
     }

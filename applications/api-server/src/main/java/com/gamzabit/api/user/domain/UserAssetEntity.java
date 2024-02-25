@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,7 +34,15 @@ public class UserAssetEntity extends EntityBase {
     @Column(precision = 30, scale = 10)
     private BigDecimal amount;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private UserEntity user;
+
+    @Builder
+    public UserAssetEntity(String assetName, String assetDisplayName, BigDecimal amount, UserEntity user) {
+        this.assetName = assetName;
+        this.assetDisplayName = assetDisplayName;
+        this.amount = amount;
+        this.user = user;
+    }
 }
