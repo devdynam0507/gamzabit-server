@@ -9,6 +9,7 @@ import com.gamzabit.api.user.domain.UserEntity;
 import com.gamzabit.api.user.domain.UserRepository;
 import com.gamzabit.api.user.exception.UserAlreadyExistsException;
 import com.gamzabit.api.user.exception.UserNotFoundException;
+import com.gamzabit.api.user.service.assets.UserAssetSynchronizer;
 import com.gamzabit.api.user.service.vo.User;
 import com.gamzabit.api.user.service.dto.UserCreation;
 
