@@ -7,9 +7,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gamzabit.api.infrastructure.common.Responses;
 import com.gamzabit.api.infrastructure.security.dto.AuthenticatedUser;
+import com.gamzabit.api.user.service.assets.UserAssetAggregator;
 import com.gamzabit.api.user.service.assets.UserAssetReader;
+import com.gamzabit.api.user.service.assets.vo.AggregatedUserAsset;
 import com.gamzabit.api.user.service.assets.vo.UserAsset;
+import com.gamzabit.api.user.service.assets.vo.UserAssetWithKrw;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,15 +22,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserAssetController {
 
-    private final UserAssetReader userAssetReader;
+    private final UserAssetAggregator userAssetAggregator;
 
     @GetMapping
-    public List<UserAsset> getAllUserAssets(AuthenticatedUser user) {
-        return userAssetReader.getUserAssets(user.getUser());
+    public Responses<AggregatedUserAsset> getAllUserAssets(AuthenticatedUser user) {
+        AggregatedUserAsset aggregatedUserAsset = userAssetAggregator.aggregateAssetsToKrw(user.getUser());
+
+        return Responses.ok("유저 자산목록을 성공적으로 조회하였습니다.", aggregatedUserAsset);
     }
 
     @GetMapping("/{symbolName}")
-    public UserAsset getSpecificSymbolUserAsset(AuthenticatedUser user, @PathVariable("symbolName") String symbolName) {
-        return userAssetReader.getSpecificSymbolUserAsset(user.getUser(), symbolName.toUpperCase());
+    public Responses<UserAssetWithKrw> getSpecificSymbolUserAsset(
+        AuthenticatedUser user,
+        @PathVariable("symbolName") String symbolName
+    ) {
+        UserAssetWithKrw userAssetWithKrw = userAssetAggregator.aggregateAssetWithKrw(user.getUser(), symbolName);
+
+        return Responses.ok("유저의 자산을 성공적으로 조회하였습니다.", userAssetWithKrw);
     }
 }
