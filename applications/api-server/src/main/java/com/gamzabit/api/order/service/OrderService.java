@@ -11,4 +11,8 @@ import lombok.RequiredArgsConstructor;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+
+    public void createOrder() {
+
+    }
 }
