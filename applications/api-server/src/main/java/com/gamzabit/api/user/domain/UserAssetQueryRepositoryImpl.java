@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.gamzabit.api.asset.domain.QSymbolEntity;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
