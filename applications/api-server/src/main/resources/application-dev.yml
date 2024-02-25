@@ -18,6 +18,11 @@ spring:
     init:
       mode: always
 
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
 jwt:
   token:
     access-secret: xxx-access-secret

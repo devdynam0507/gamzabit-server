@@ -38,6 +38,7 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(authorize -> {
             authorize
                 .requestMatchers("/api/v1/order").authenticated()
+                .requestMatchers("/api/v1/user/**").authenticated()
                 .anyRequest().permitAll();
         });
         http.csrf(csrf -> {
