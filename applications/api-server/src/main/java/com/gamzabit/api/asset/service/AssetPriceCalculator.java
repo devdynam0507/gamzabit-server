@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 
 import org.springframework.stereotype.Service;
 
-import com.gamzabit.api.asset.domain.SymbolEntity;
+import com.gamzabit.api.asset.service.vo.Assets;
 
 @Service
 public class AssetPriceCalculator {
@@ -15,16 +15,16 @@ public class AssetPriceCalculator {
      *
      * 가상자산의 현재가 * 갯수
      *
-     * @param symbol 원화로 치환할 거래소 자산
+     * @param assets 원화로 치환할 거래소 자산
      * @param amount 가상자산의 개수
      *
      * @return 가지고 있는 가상 자산의 현재 원화 가치
      * */
-    public BigDecimal toKrw(SymbolEntity symbol, BigDecimal amount) {
-        if (symbol.getSymbolName().equals("KRW")) {
+    public BigDecimal toKrw(Assets assets, BigDecimal amount) {
+        if (assets.symbolName().equals("KRW")) {
             return amount;
         }
-        return symbol.getCurrentValue().multiply(amount);
+        return assets.currentValue().multiply(amount);
     }
 
     /**
@@ -37,7 +37,7 @@ public class AssetPriceCalculator {
      *
      * @return 가상 자산의 갯수를 구매할 갯수만큼 환산
      * */
-    public BigDecimal toKrwPerPiece(SymbolEntity symbol, BigDecimal buyPrice) {
-        return buyPrice.divide(symbol.getCurrentValue(), 30, RoundingMode.HALF_UP);
+    public BigDecimal toKrwPerPiece(Assets assets, BigDecimal buyPrice) {
+        return buyPrice.divide(assets.currentValue(), 30, RoundingMode.HALF_UP);
     }
 }

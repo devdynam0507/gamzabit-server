@@ -1,9 +1,9 @@
 package com.gamzabit.api.user.service.assets.vo;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 public record UserAssetWithKrw(
     UserAsset userAsset,
-    BigInteger krw
+    BigDecimal krw
 ) {
 }

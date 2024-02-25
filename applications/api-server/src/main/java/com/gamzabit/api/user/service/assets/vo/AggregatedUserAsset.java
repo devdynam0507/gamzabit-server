@@ -1,10 +1,10 @@
 package com.gamzabit.api.user.service.assets.vo;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.List;
 
 public record AggregatedUserAsset(
-    BigInteger totalUserAssetKrw,
+    BigDecimal totalUserAssetKrw,
     List<UserAsset> assets
 ) {
 }
