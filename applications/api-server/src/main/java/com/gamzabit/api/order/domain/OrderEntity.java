@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,4 +43,21 @@ public class OrderEntity extends EntityBase {
 
     @Enumerated(EnumType.STRING)
     private OrderState orderState;
+
+    @Builder
+    public OrderEntity(
+        Long userId,
+        Long assetId,
+        BigDecimal orderQuantity,
+        Long orderPrice,
+        OrderType orderType,
+        OrderState orderState
+    ) {
+        this.userId = userId;
+        this.assetId = assetId;
+        this.orderQuantity = orderQuantity;
+        this.orderPrice = orderPrice;
+        this.orderType = orderType;
+        this.orderState = orderState;
+    }
 }

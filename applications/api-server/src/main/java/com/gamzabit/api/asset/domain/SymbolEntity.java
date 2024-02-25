@@ -22,5 +22,5 @@ public class SymbolEntity extends EntityBase {
     private Long id;
 
     private String symbolName;
-    private Boolean isDelisted;
+    private Boolean delisted;
 }
