@@ -2,6 +2,7 @@ package com.gamzabit.api.user.domain;
 
 import java.math.BigDecimal;
 
+import com.gamzabit.api.asset.domain.SymbolEntity;
 import com.gamzabit.api.common.domain.EntityBase;
 
 import jakarta.persistence.Column;
@@ -27,10 +28,6 @@ public class UserAssetEntity extends EntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String assetName;
-
-    private String assetDisplayName;
-
     @Column(precision = 30, scale = 10)
     private BigDecimal amount;
 
@@ -38,11 +35,22 @@ public class UserAssetEntity extends EntityBase {
     @JoinColumn(name = "member_id")
     private UserEntity user;
 
+    @ManyToOne
+    @JoinColumn(name = "symbol_id")
+    private SymbolEntity symbol;
+
     @Builder
-    public UserAssetEntity(String assetName, String assetDisplayName, BigDecimal amount, UserEntity user) {
-        this.assetName = assetName;
-        this.assetDisplayName = assetDisplayName;
+    public UserAssetEntity(BigDecimal amount, UserEntity user, SymbolEntity symbol) {
         this.amount = amount;
         this.user = user;
+        this.symbol = symbol;
+    }
+
+    public static UserAssetEntity create(UserEntity user, SymbolEntity symbol, BigDecimal initialAmount) {
+        return UserAssetEntity.builder()
+            .user(user)
+            .symbol(symbol)
+            .amount(initialAmount)
+            .build();
     }
 }
