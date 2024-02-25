@@ -1,6 +1,8 @@
 package com.gamzabit.api.order.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +28,13 @@ public class OrderController {
     public Responses<Long> createOrder(AuthenticatedUser user, @RequestBody OrderCreateRequest orderCreateRequest) {
         Long createdOrderId = orderService.createOrder(user.getUser(), orderCreateRequest.toOrderCreate());
 
-        return Responses.ok("주문이 성공적으로 생성되었습니다.", createdOrderId);
+        return Responses.created("주문이 성공적으로 생성되었습니다.", createdOrderId);
     }
 
-    @DeleteMapping
-    public void cancelOrder() {
+    @DeleteMapping("/{orderId}")
+    public Responses<Void> cancelOrder(AuthenticatedUser user, @PathVariable("orderId") Long orderId) {
+        orderService.cancelOrder(user.getUser(), orderId);
 
+        return Responses.onlyMessage(HttpStatus.OK, "주문을 취소하였습니다.");
     }
 }

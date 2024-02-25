@@ -1,6 +1,6 @@
 package com.gamzabit.api.order.service;
 
-import java.math.BigDecimal;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,8 +9,7 @@ import com.gamzabit.api.asset.domain.SymbolRepository;
 import com.gamzabit.api.asset.exception.AssetNotFoundException;
 import com.gamzabit.api.order.domain.OrderEntity;
 import com.gamzabit.api.order.domain.OrderRepository;
-import com.gamzabit.api.order.domain.types.OrderState;
-import com.gamzabit.api.order.domain.types.OrderType;
+import com.gamzabit.api.order.exception.OrderNotFoundException;
 import com.gamzabit.api.order.service.vo.OrderCreate;
 import com.gamzabit.api.user.exception.UserNotFoundException;
 import com.gamzabit.api.user.service.vo.User;
@@ -38,5 +37,15 @@ public class OrderService {
         OrderEntity createdOrder = orderRepository.save(order);
 
         return createdOrder.getId();
+    }
+
+    @Transactional
+    public void cancelOrder(User user, Long orderId) {
+        Optional<OrderEntity> orderEntityOptional = orderRepository.findById(orderId);
+        if (orderEntityOptional.isEmpty()) {
+            throw new OrderNotFoundException(orderId, user.id());
+        }
+        OrderEntity order = orderEntityOptional.get();
+        order.cancel();
     }
 }

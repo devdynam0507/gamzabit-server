@@ -60,4 +60,8 @@ public class OrderEntity extends EntityBase {
         this.orderType = orderType;
         this.orderState = orderState;
     }
+
+    public void cancel() {
+        this.orderState = OrderState.Cancel;
+    }
 }
