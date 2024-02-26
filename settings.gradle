@@ -3,4 +3,7 @@ include 'applications'
 include 'applications:order-matcing-server'
 include 'applications:api-server'
 findProject(':applications:api-server')?.name = 'api-server'
+include 'domain'
+include 'domain:domain-rdb'
+findProject(':domain:domain-rdb')?.name = 'domain-rdb'
 
