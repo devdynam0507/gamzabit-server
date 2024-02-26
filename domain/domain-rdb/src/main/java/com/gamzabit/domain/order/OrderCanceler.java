@@ -1,4 +1,4 @@
-package com.gamzabit.domain.order.service;
+package com.gamzabit.domain.order;
 
 import java.util.Optional;
 

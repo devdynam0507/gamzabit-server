@@ -2,7 +2,7 @@ package com.gamzabit.api.order.service;
 
 import org.springframework.stereotype.Service;
 
-import com.gamzabit.domain.order.service.OrderCanceler;
+import com.gamzabit.domain.order.OrderCanceler;
 
 import lombok.RequiredArgsConstructor;
 
