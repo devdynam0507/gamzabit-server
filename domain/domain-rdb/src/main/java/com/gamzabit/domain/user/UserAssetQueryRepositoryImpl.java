@@ -1,5 +1,7 @@
 package com.gamzabit.domain.user;
 
+import static com.gamzabit.domain.user.QUserAssetEntity.*;
+
 import java.util.List;
 import java.util.Optional;
 

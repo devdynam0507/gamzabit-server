@@ -2,11 +2,6 @@ plugins {
     id 'java'
 }
 
-ext {
-    moduleDir = "$projectDir/applications/api-server"
-    moduleQdslBuildDir = layout.buildDirectory.dir("generated/querydsl").get().asFile
-}
-
 group 'com.gamzabit.api'
 version '0.0.1-SNAPSHOT'
 

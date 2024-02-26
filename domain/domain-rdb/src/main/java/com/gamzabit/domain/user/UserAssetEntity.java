@@ -2,7 +2,7 @@ package com.gamzabit.domain.user;
 
 import java.math.BigDecimal;
 
-import com.gamzabit.api.asset.domain.SymbolEntity;
+import com.gamzabit.domain.asset.SymbolEntity;
 import com.gamzabit.domain.common.EntityBase;
 
 import jakarta.persistence.Column;
