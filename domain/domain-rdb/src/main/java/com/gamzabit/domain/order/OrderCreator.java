@@ -4,8 +4,6 @@ import org.springframework.stereotype.Service;
 
 import com.gamzabit.domain.asset.SymbolRepository;
 import com.gamzabit.domain.asset.exception.AssetNotFoundException;
-import com.gamzabit.domain.order.OrderEntity;
-import com.gamzabit.domain.order.OrderRepository;
 import com.gamzabit.domain.order.vo.OrderCreate;
 import com.gamzabit.domain.user.exception.UserNotFoundException;
 import com.gamzabit.domain.user.vo.User;
