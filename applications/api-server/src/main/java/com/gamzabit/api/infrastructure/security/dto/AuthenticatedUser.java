@@ -1,6 +1,6 @@
 package com.gamzabit.api.infrastructure.security.dto;
 
-import com.gamzabit.api.user.service.vo.User;
+import com.gamzabit.domain.user.vo.User;
 
 import lombok.Data;
 

@@ -7,7 +7,7 @@ import java.math.RoundingMode;
 
 import org.junit.jupiter.api.Test;
 
-import com.gamzabit.api.asset.service.vo.Assets;
+import com.gamzabit.domain.asset.vo.Assets;
 
 class AssetPriceCalculatorTest {
 

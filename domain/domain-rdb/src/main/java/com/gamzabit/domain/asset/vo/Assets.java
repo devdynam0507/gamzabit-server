@@ -1,4 +1,4 @@
-package com.gamzabit.api.asset.service.vo;
+package com.gamzabit.domain.asset.vo;
 
 import java.math.BigDecimal;
 

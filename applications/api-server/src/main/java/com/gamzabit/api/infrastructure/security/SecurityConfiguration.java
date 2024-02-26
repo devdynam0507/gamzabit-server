@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import com.gamzabit.api.infrastructure.security.filters.PreJwtAuthenticationFilter;
 import com.gamzabit.api.infrastructure.security.filters.PreJwtAuthenticationProvider;
 import com.gamzabit.api.infrastructure.security.jwt.JwtStrategy;
-import com.gamzabit.api.user.service.UserService;
+import com.gamzabit.domain.user.service.UserReader;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @ConditionalOnWebApplication(type = Type.SERVLET)
 public class SecurityConfiguration {
 
-    private final UserService userService;
+    private final UserReader userReader;
     private final JwtStrategy jwtStrategy;
 
     @Bean
@@ -67,6 +67,6 @@ public class SecurityConfiguration {
 
     @Bean
     public PreJwtAuthenticationProvider preAuthTokenProvider() {
-        return new PreJwtAuthenticationProvider(jwtStrategy, userService);
+        return new PreJwtAuthenticationProvider(jwtStrategy, userReader);
     }
 }

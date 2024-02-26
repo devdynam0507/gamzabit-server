@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.gamzabit.api.user.service.UserService;
+import com.gamzabit.domain.user.service.UserReader;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,10 +14,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticatedUserArgumentResolverConfiguration implements WebMvcConfigurer {
 
-    private final UserService userService;
+    private final UserReader userReader;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new AuthenticatedUserArgumentResolver(userService));
+        resolvers.add(new AuthenticatedUserArgumentResolver(userReader));
     }
 }

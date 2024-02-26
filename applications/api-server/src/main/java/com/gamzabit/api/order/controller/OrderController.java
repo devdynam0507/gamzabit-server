@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gamzabit.api.infrastructure.common.Responses;
 import com.gamzabit.api.infrastructure.security.dto.AuthenticatedUser;
 import com.gamzabit.api.order.controller.dto.OrderCreateRequest;
-import com.gamzabit.api.order.service.OrderService;
+import com.gamzabit.domain.order.service.OrderCanceler;
+import com.gamzabit.domain.order.service.OrderCreator;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,18 +23,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrderController {
 
-    private final OrderService orderService;
+    private final OrderCreator orderCreator;
+    private final OrderCanceler orderCanceler;
 
     @PostMapping
     public Responses<Long> createOrder(AuthenticatedUser user, @RequestBody OrderCreateRequest orderCreateRequest) {
-        Long createdOrderId = orderService.createOrder(user.getUser(), orderCreateRequest.toOrderCreate());
+        Long createdOrderId = orderCreator.createOrder(user.getUser(), orderCreateRequest.toOrderCreate());
 
         return Responses.created("주문이 성공적으로 생성되었습니다.", createdOrderId);
     }
 
     @DeleteMapping("/{orderId}")
     public Responses<Void> cancelOrder(AuthenticatedUser user, @PathVariable("orderId") Long orderId) {
-        orderService.cancelOrder(user.getUser(), orderId);
+        orderCanceler.cancelOrder(user.getUser().id(), orderId);
 
         return Responses.onlyMessage(HttpStatus.OK, "주문을 취소하였습니다.");
     }

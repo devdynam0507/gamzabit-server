@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 
 import org.springframework.stereotype.Service;
 
-import com.gamzabit.api.asset.service.vo.Assets;
+import com.gamzabit.domain.asset.vo.Assets;
 
 @Service
 public class AssetPriceCalculator {

@@ -1,17 +1,16 @@
 package com.gamzabit.api.user.service.assets;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.gamzabit.api.asset.domain.SymbolRepository;
 import com.gamzabit.api.asset.service.AssetPriceCalculator;
-import com.gamzabit.api.user.service.assets.vo.AggregatedUserAsset;
-import com.gamzabit.api.user.service.assets.vo.UserAsset;
-import com.gamzabit.api.user.service.assets.vo.UserAssetWithKrw;
-import com.gamzabit.api.user.service.vo.User;
+import com.gamzabit.domain.user.service.UserAssetReader;
+import com.gamzabit.domain.user.vo.AggregatedUserAsset;
+import com.gamzabit.domain.user.vo.User;
+import com.gamzabit.domain.user.vo.UserAsset;
+import com.gamzabit.domain.user.vo.UserAssetWithKrw;
 
 import lombok.RequiredArgsConstructor;
 

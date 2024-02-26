@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.gamzabit.api.authentication.exception.AuthenticationException;
 import com.gamzabit.api.infrastructure.common.Responses;
-import com.gamzabit.api.user.exception.UserAlreadyExistsException;
-import com.gamzabit.api.user.exception.UserNotFoundException;
+import com.gamzabit.domain.user.exception.UserAlreadyExistsException;
+import com.gamzabit.domain.user.exception.UserNotFoundException;
 
 @RestControllerAdvice
 public class AuthenticationErrorAdvice {

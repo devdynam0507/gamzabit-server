@@ -1,7 +1,5 @@
 package com.gamzabit.api.user.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gamzabit.api.infrastructure.common.Responses;
 import com.gamzabit.api.infrastructure.security.dto.AuthenticatedUser;
 import com.gamzabit.api.user.service.assets.UserAssetAggregator;
-import com.gamzabit.api.user.service.assets.UserAssetReader;
-import com.gamzabit.api.user.service.assets.vo.AggregatedUserAsset;
-import com.gamzabit.api.user.service.assets.vo.UserAsset;
-import com.gamzabit.api.user.service.assets.vo.UserAssetWithKrw;
+
+import com.gamzabit.domain.user.vo.AggregatedUserAsset;
+import com.gamzabit.domain.user.vo.UserAssetWithKrw;
 
 import lombok.RequiredArgsConstructor;
 

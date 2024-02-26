@@ -8,11 +8,11 @@ import com.gamzabit.api.authentication.exception.AuthenticationException;
 import com.gamzabit.api.infrastructure.security.jwt.JwtProvider;
 import com.gamzabit.api.infrastructure.security.jwt.JwtStrategy;
 import com.gamzabit.api.infrastructure.security.jwt.JwtTokenType;
-import com.gamzabit.api.user.exception.UserAlreadyExistsException;
-import com.gamzabit.api.user.service.UserService;
-import com.gamzabit.api.user.service.assets.UserAssetSynchronizer;
-import com.gamzabit.api.user.service.dto.UserCreation;
-import com.gamzabit.api.user.service.vo.User;
+import com.gamzabit.domain.user.exception.UserAlreadyExistsException;
+import com.gamzabit.domain.user.service.UserCreator;
+import com.gamzabit.domain.user.service.UserReader;
+import com.gamzabit.domain.user.vo.User;
+import com.gamzabit.domain.user.vo.UserCreation;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,8 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserService userService;
-    private final UserAssetSynchronizer userAssetSynchronizer;
+    private final UserCreator userCreator;
+    private final UserReader userReader;
     private final PasswordEncoder passwordEncoder;
     private final JwtStrategy jwtStrategy;
     private static final long accessTokenExpired = 3600 * 24 * 1000;
@@ -31,7 +31,7 @@ public class AuthenticationService {
         String encodedPassword = passwordEncoder.encode(password);
         UserCreation userCreation = new UserCreation(email, encodedPassword, nickname);
         try {
-            return userService.createUser(userCreation);
+            return userCreator.createUser(userCreation);
         } catch (UserAlreadyExistsException e) {
             throw new AuthenticationException(e);
         }
@@ -39,14 +39,13 @@ public class AuthenticationService {
 
     public SigninResponse signin(String email, String password) {
         try {
-            User user = userService.findUserByEmail(email);
+            User user = userReader.findUserByEmail(email);
             boolean isPasswordMatched = passwordEncoder.matches(password, user.password());
             if (!isPasswordMatched) {
                 throw new AuthenticationException("비밀번호가 일치하지 않습니다.");
             }
             JwtProvider accessTokenProvider = jwtStrategy.getProvider(JwtTokenType.Access);
             String accessToken = accessTokenProvider.encrypt("id", user.id(), accessTokenExpired);
-            userAssetSynchronizer.syncUserAssets(user.id());
 
             return new SigninResponse(email, accessToken);
         } catch (Throwable e) {

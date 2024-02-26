@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.gamzabit.api.asset.exception.AssetException;
 import com.gamzabit.api.infrastructure.common.Responses;
-import com.gamzabit.api.order.exception.OrderException;
+import com.gamzabit.domain.asset.exception.AssetException;
+import com.gamzabit.domain.order.exception.OrderException;
 
 @RestControllerAdvice
 public class OrderErrorAdvice {

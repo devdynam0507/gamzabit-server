@@ -12,9 +12,9 @@ import com.gamzabit.api.infrastructure.security.jwt.JwtProvider;
 import com.gamzabit.api.infrastructure.security.jwt.JwtStrategy;
 import com.gamzabit.api.infrastructure.security.jwt.JwtTokenType;
 import com.gamzabit.api.infrastructure.security.roles.Roles;
-import com.gamzabit.api.user.exception.UserNotFoundException;
-import com.gamzabit.api.user.service.UserService;
-import com.gamzabit.api.user.service.vo.User;
+import com.gamzabit.domain.user.exception.UserNotFoundException;
+import com.gamzabit.domain.user.service.UserReader;
+import com.gamzabit.domain.user.vo.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class PreJwtAuthenticationProvider implements AuthenticationProvider {
 
     private final JwtStrategy jwtStrategy;
-    private final UserService userService;
+    private final UserReader userReader;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -34,7 +34,7 @@ public class PreJwtAuthenticationProvider implements AuthenticationProvider {
         Long userId = jwtProvider.decrypt(token, "id", Long.class);
         User user;
         try {
-            user = userService.findUserById(userId);
+            user = userReader.findUserById(userId);
         } catch (UserNotFoundException e) {
             throw new TokenMissingException(e);
         }

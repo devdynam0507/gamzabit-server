@@ -11,7 +11,7 @@ import com.gamzabit.api.authentication.controller.dto.SignupRequest;
 import com.gamzabit.api.authentication.controller.dto.SignupSuccessResponse;
 import com.gamzabit.api.authentication.service.AuthenticationService;
 import com.gamzabit.api.infrastructure.common.Responses;
-import com.gamzabit.api.user.service.vo.User;
+import com.gamzabit.domain.user.vo.User;
 
 import lombok.RequiredArgsConstructor;
 
