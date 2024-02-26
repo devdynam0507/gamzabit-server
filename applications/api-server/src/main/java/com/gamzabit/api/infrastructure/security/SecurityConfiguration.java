@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import com.gamzabit.api.infrastructure.security.filters.PreJwtAuthenticationFilter;
 import com.gamzabit.api.infrastructure.security.filters.PreJwtAuthenticationProvider;
 import com.gamzabit.api.infrastructure.security.jwt.JwtStrategy;
-import com.gamzabit.domain.user.service.UserReader;
+import com.gamzabit.domain.user.UserReader;
 
 import lombok.RequiredArgsConstructor;
 

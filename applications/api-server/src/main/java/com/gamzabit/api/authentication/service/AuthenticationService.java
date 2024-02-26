@@ -9,8 +9,8 @@ import com.gamzabit.api.infrastructure.security.jwt.JwtProvider;
 import com.gamzabit.api.infrastructure.security.jwt.JwtStrategy;
 import com.gamzabit.api.infrastructure.security.jwt.JwtTokenType;
 import com.gamzabit.domain.user.exception.UserAlreadyExistsException;
-import com.gamzabit.domain.user.service.UserCreator;
-import com.gamzabit.domain.user.service.UserReader;
+import com.gamzabit.domain.user.UserCreator;
+import com.gamzabit.domain.user.UserReader;
 import com.gamzabit.domain.user.vo.User;
 import com.gamzabit.domain.user.vo.UserCreation;
 

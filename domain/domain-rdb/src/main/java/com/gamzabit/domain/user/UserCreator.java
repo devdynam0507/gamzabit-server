@@ -1,11 +1,9 @@
-package com.gamzabit.domain.user.service;
+package com.gamzabit.domain.user;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.gamzabit.domain.user.UserEntity;
-import com.gamzabit.domain.user.UserRepository;
 import com.gamzabit.domain.user.exception.UserAlreadyExistsException;
 import com.gamzabit.domain.user.vo.User;
 import com.gamzabit.domain.user.vo.UserCreation;

@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.gamzabit.api.asset.service.AssetPriceCalculator;
-import com.gamzabit.domain.user.service.UserAssetReader;
+import com.gamzabit.domain.user.UserAssetReader;
 import com.gamzabit.domain.user.vo.AggregatedUserAsset;
 import com.gamzabit.domain.user.vo.User;
 import com.gamzabit.domain.user.vo.UserAsset;

@@ -1,4 +1,4 @@
-package com.gamzabit.domain.user.service;
+package com.gamzabit.domain.user;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,8 +6,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.gamzabit.domain.asset.exception.AssetNotFoundException;
-import com.gamzabit.domain.user.UserAssetEntity;
-import com.gamzabit.domain.user.UserAssetQueryRepository;
 import com.gamzabit.domain.user.vo.User;
 import com.gamzabit.domain.user.vo.UserAsset;
 
