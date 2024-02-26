@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gamzabit.api.infrastructure.common.Responses;
 import com.gamzabit.api.infrastructure.security.dto.AuthenticatedUser;
-import com.gamzabit.api.user.service.assets.UserAssetAggregator;
+import com.gamzabit.api.user.service.UserAssetAggregator;
 
 import com.gamzabit.domain.user.vo.AggregatedUserAsset;
 import com.gamzabit.domain.user.vo.UserAssetWithKrw;

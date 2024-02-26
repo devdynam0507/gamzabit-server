@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gamzabit.api.infrastructure.common.Responses;
 import com.gamzabit.api.infrastructure.security.dto.AuthenticatedUser;
 import com.gamzabit.api.order.controller.dto.OrderCreateRequest;
-import com.gamzabit.domain.order.service.OrderCanceler;
-import com.gamzabit.domain.order.service.OrderCreator;
+import com.gamzabit.api.order.service.OrderCancelService;
+import com.gamzabit.api.order.service.OrderCreateService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrderController {
 
-    private final OrderCreator orderCreator;
-    private final OrderCanceler orderCanceler;
+    private final OrderCreateService orderCreator;
+    private final OrderCancelService orderCanceler;
 
     @PostMapping
     public Responses<Long> createOrder(AuthenticatedUser user, @RequestBody OrderCreateRequest orderCreateRequest) {

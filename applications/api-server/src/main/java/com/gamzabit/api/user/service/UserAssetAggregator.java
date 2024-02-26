@@ -1,4 +1,4 @@
-package com.gamzabit.api.user.service.assets;
+package com.gamzabit.api.user.service;
 
 import java.math.BigDecimal;
 import java.util.List;
