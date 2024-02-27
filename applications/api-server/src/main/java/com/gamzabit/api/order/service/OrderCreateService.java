@@ -15,6 +15,7 @@ public class OrderCreateService {
     private final OrderCreator orderCreator;
 
     public Long createOrder(User user, OrderCreate orderCreate) {
-        return orderCreator.createOrder(user, orderCreate);
+        Long orderId = orderCreator.createOrder(user, orderCreate);
+        return orderId;
     }
 }
