@@ -12,7 +12,6 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.kafka:spring-kafka'
 
     implementation 'com.auth0:java-jwt:4.4.0'
 
@@ -20,6 +19,7 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
     implementation project(':domain:domain-rdb')
+    implementation project(':infrastructure:kafka-common')
 }
 
 test {

@@ -1,4 +1,4 @@
-package com.gamzabit.api.infrastructure.kafka;
+package com.gamzabit.infrastructure.kafka;
 
 import java.io.IOException;
 

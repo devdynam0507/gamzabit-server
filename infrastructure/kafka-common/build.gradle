@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group 'com.gamzabit'
+version '0.0.1-SNAPSHOT'
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-autoconfigure:3.2.2'
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
+}
+
+test {
+    useJUnitPlatform()
+}

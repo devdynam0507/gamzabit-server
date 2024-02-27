@@ -1,13 +1,11 @@
 package com.gamzabit.order;
 
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
+import com.gamzabit.infrastructure.kafka.KafkaMessageListener;
 
-@Component
-public class OrderConsumer {
+public class OrderConsumer implements KafkaMessageListener<String> {
 
-    @KafkaListener(topics = "order", groupId = "group_1")
-    public void listen(String orderJson) {
+    @Override
+    public void onMessage(String orderJson) {
         System.out.println(orderJson);
     }
 }
