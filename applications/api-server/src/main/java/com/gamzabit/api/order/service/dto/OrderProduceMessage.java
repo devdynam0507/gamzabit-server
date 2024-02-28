@@ -11,17 +11,19 @@ public record OrderProduceMessage(
     Long orderId,
     BigDecimal amount,
     Long orderPriceKrw,
-    OrderType orderType
+    OrderType orderType,
+    Long orderCreationTime
 ) {
 
-    public static OrderProduceMessage from(Long userId, OrderCreate orderCreate, Long orderId) {
+    public static OrderProduceMessage from(Long userId, OrderCreate orderCreate, Long orderId, Long orderCreationTime) {
         return new OrderProduceMessage(
             orderCreate.symbolId(),
             userId,
             orderId,
             orderCreate.amount(),
             orderCreate.orderPriceKrw(),
-            orderCreate.orderType()
+            orderCreate.orderType(),
+            orderCreationTime
         );
     }
 }
