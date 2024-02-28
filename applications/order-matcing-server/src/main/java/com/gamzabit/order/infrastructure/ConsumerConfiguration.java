@@ -1,19 +1,28 @@
 package com.gamzabit.order.infrastructure;
 
+import java.util.Set;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gamzabit.infrastructure.kafka.KafkaConsumerRegistrar;
-import com.gamzabit.order.OrderConsumer;
+import com.gamzabit.infrastructure.kafka.KafkaMessageListener;
 
 @Configuration
 public class ConsumerConfiguration {
 
     @Bean
-    KafkaConsumerRegistrar registrar() {
+    ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
+    KafkaConsumerRegistrar registrar(Set<KafkaMessageListener<String>> consumers) {
         return consumerBuilder -> {
-            OrderConsumer consumer = new OrderConsumer();
-            consumerBuilder.listener("created_order", "group_1", consumer, String.class);
+            consumers.forEach(consumer -> {
+                consumerBuilder.listener("created_order", "group_1", consumer, String.class);
+            });
         };
     }
 }
