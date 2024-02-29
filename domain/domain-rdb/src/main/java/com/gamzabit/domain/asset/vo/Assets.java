@@ -1,22 +1,10 @@
 package com.gamzabit.domain.asset.vo;
 
-import java.math.BigDecimal;
-
-import com.gamzabit.domain.asset.SymbolEntity;
+import com.gamzabit.domain.asset.AssetPrice;
 
 public record Assets(
-    BigDecimal currentValue,
+    AssetPrice currentValue,
     String symbolName,
     String symbolDisplayName,
     Boolean delisted
-) {
-
-    public static Assets from(SymbolEntity symbol) {
-        return new Assets(
-            symbol.getCurrentValue(),
-            symbol.getSymbolName(),
-            symbol.getSymbolDisplayName(),
-            symbol.getDelisted()
-        );
-    }
-}
+) {}

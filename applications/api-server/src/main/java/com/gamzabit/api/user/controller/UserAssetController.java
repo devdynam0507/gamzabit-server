@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gamzabit.api.infrastructure.common.Responses;
 import com.gamzabit.api.infrastructure.security.dto.AuthenticatedUser;
-import com.gamzabit.api.user.service.UserAssetAggregator;
 
+import com.gamzabit.api.user.service.UserAssetCalculateService;
 import com.gamzabit.domain.user.vo.AggregatedUserAsset;
 import com.gamzabit.domain.user.vo.UserAssetWithKrw;
 
@@ -19,11 +19,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserAssetController {
 
-    private final UserAssetAggregator userAssetAggregator;
+    private final UserAssetCalculateService userAssetCalculator;
 
     @GetMapping
     public Responses<AggregatedUserAsset> getAllUserAssets(AuthenticatedUser user) {
-        AggregatedUserAsset aggregatedUserAsset = userAssetAggregator.aggregateAssetsToKrw(user.getUser());
+        AggregatedUserAsset aggregatedUserAsset = userAssetCalculator.aggregateAssetsToKrw(user.getUser());
 
         return Responses.ok("유저 자산목록을 성공적으로 조회하였습니다.", aggregatedUserAsset);
     }
@@ -33,7 +33,7 @@ public class UserAssetController {
         AuthenticatedUser user,
         @PathVariable("symbolName") String symbolName
     ) {
-        UserAssetWithKrw userAssetWithKrw = userAssetAggregator.aggregateAssetWithKrw(user.getUser(), symbolName);
+        UserAssetWithKrw userAssetWithKrw = userAssetCalculator.aggregateAssetWithKrw(user.getUser(), symbolName);
 
         return Responses.ok("유저의 자산을 성공적으로 조회하였습니다.", userAssetWithKrw);
     }

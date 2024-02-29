@@ -2,7 +2,6 @@ package com.gamzabit.api.order.controller.dto;
 
 import java.math.BigDecimal;
 
-import com.gamzabit.domain.order.OrderType;
 import com.gamzabit.domain.order.vo.OrderCreate;
 
 import lombok.Data;

@@ -7,5 +7,5 @@ public interface UserAssetQueryRepository {
 
     List<UserAssetEntity> findAllByUserId(Long userId);
 
-    Optional<UserAssetEntity> findByUserIdAndSymbolName(Long userId, String symbolName);
+    Optional<UserAssetEntity> findByUserIdAndAssetName(Long userId, String assetName);
 }

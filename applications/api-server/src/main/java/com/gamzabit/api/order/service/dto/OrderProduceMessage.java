@@ -2,7 +2,6 @@ package com.gamzabit.api.order.service.dto;
 
 import java.math.BigDecimal;
 
-import com.gamzabit.domain.order.OrderType;
 import com.gamzabit.domain.order.vo.OrderCreate;
 
 public record OrderProduceMessage(

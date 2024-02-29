@@ -35,7 +35,7 @@ public class OrderController {
 
     @DeleteMapping("/{orderId}")
     public Responses<Void> cancelOrder(AuthenticatedUser user, @PathVariable("orderId") Long orderId) {
-        orderCanceler.cancelOrder(user.getUser().id(), orderId);
+        orderCanceler.cancelOrder(user.getUser().id().longValue(), orderId);
 
         return Responses.onlyMessage(HttpStatus.OK, "주문을 취소하였습니다.");
     }

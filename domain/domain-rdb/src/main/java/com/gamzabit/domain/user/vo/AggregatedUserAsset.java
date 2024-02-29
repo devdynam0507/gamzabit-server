@@ -1,10 +1,11 @@
 package com.gamzabit.domain.user.vo;
 
-import java.math.BigDecimal;
 import java.util.List;
 
+import com.gamzabit.domain.asset.AssetPrice;
+
 public record AggregatedUserAsset(
-    BigDecimal totalUserAssetKrw,
+    AssetPrice totalUserAssetKrw,
     List<UserAsset> assets
 ) {
 }

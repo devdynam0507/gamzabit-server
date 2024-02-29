@@ -6,10 +6,8 @@ import com.gamzabit.domain.common.EntityBase;
 import com.gamzabit.domain.user.vo.User;
 import com.gamzabit.domain.user.vo.UserCreation;
 
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,9 +20,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UserEntity extends EntityBase {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private UserId id;
     private String nickname;
     private String email;
     private String password;

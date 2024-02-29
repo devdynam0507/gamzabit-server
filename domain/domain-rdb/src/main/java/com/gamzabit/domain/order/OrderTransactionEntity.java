@@ -2,7 +2,9 @@ package com.gamzabit.domain.order;
 
 import java.math.BigDecimal;
 
+import com.gamzabit.domain.asset.AssetPrice;
 import com.gamzabit.domain.common.EntityBase;
+import com.gamzabit.domain.user.AssetAmount;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,8 +31,15 @@ public class OrderTransactionEntity extends EntityBase {
 
     private Long orderId;
 
-    @Column(precision = 30, scale = 10)
-    private BigDecimal concludedQuantity;
+    private AssetAmount concludedQuantity;
 
-    private Long concludedKrw;
+    private AssetPrice concludedKrw;
+
+    @Builder
+    public OrderTransactionEntity(Long userId, Long orderId, AssetAmount concludedQuantity, AssetPrice concludedKrw) {
+        this.userId = userId;
+        this.orderId = orderId;
+        this.concludedQuantity = concludedQuantity;
+        this.concludedKrw = concludedKrw;
+    }
 }

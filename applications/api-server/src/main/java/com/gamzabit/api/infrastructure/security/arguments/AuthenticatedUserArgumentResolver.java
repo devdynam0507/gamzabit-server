@@ -9,6 +9,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.gamzabit.api.infrastructure.security.dto.AuthenticatedUser;
+import com.gamzabit.domain.user.UserId;
 import com.gamzabit.domain.user.UserReader;
 import com.gamzabit.domain.user.vo.User;
 
@@ -35,8 +36,8 @@ public class AuthenticatedUserArgumentResolver implements HandlerMethodArgumentR
         if (authentication == null) {
             return new AuthenticatedUser(null);
         }
-        Long id = (Long) authentication.getPrincipal();
-        User user = userReader.findUserById(id);
+        UserId id = (UserId) authentication.getPrincipal();
+        User user = userReader.findUserById(id.getId());
 
         return new AuthenticatedUser(user);
     }

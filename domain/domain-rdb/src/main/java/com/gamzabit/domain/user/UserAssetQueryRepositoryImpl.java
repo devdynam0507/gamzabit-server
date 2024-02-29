@@ -17,26 +17,27 @@ public class UserAssetQueryRepositoryImpl implements UserAssetQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
+
     @Override
     public List<UserAssetEntity> findAllByUserId(Long userId) {
         return queryFactory
             .select(userAssetEntity)
             .from(userAssetEntity)
             .leftJoin(QUserEntity.userEntity)
-            .on(QUserEntity.userEntity.id.eq(userId))
+            .on(QUserEntity.userEntity.id.id.eq(userId))
             .fetch();
     }
 
     @Override
-    public Optional<UserAssetEntity> findByUserIdAndSymbolName(Long userId, String symbolName) {
+    public Optional<UserAssetEntity> findByUserIdAndAssetName(Long userId, String symbolName) {
         return Optional.ofNullable(
             queryFactory
                 .select(userAssetEntity)
                 .from(userAssetEntity)
                 .where(
-                    userAssetEntity.user.id.eq(userId)
+                    userAssetEntity.user.id.id.eq(userId)
                        .and(
-                           userAssetEntity.symbol.symbolName.eq(symbolName)
+                           userAssetEntity.asset.symbol.symbolName.eq(symbolName)
                        )
                 )
                 .fetchOne()

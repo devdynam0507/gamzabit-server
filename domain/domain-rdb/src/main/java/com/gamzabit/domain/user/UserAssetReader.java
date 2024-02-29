@@ -18,21 +18,21 @@ public class UserAssetReader {
     private final UserAssetQueryRepository userAssetQueryRepository;
 
     public List<UserAsset> getUserAssets(User user) {
-        List<UserAssetEntity> userAssets = userAssetQueryRepository.findAllByUserId(user.id());
+        List<UserAssetEntity> userAssets = userAssetQueryRepository.findAllByUserId(user.id().longValue());
 
         return userAssets.stream()
-            .filter(userAssetEntity -> !userAssetEntity.getSymbol().getDelisted())
-            .map(UserAsset::from)
+            .filter(userAssetEntity -> userAssetEntity.getAsset().isDelisted())
+            .map(UserAssetEntity::toUserAsset)
             .toList();
     }
 
     public UserAsset getSpecificSymbolUserAsset(User user, String symbolName) {
         Optional<UserAssetEntity> userAssetEntityOptional =
-            userAssetQueryRepository.findByUserIdAndSymbolName(user.id(), symbolName);
+            userAssetQueryRepository.findByUserIdAndAssetName(user.id().longValue(), symbolName);
         if (userAssetEntityOptional.isEmpty()) {
             throw new AssetNotFoundException("유저의 '" + symbolName + "' 자산이 존재하지 않습니다.", symbolName);
         }
 
-        return UserAsset.from(userAssetEntityOptional.get());
+        return userAssetEntityOptional.get().toUserAsset();
     }
 }

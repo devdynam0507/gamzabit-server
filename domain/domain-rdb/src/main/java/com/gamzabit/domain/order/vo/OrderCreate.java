@@ -2,17 +2,26 @@ package com.gamzabit.domain.order.vo;
 
 import java.math.BigDecimal;
 
+import com.gamzabit.domain.asset.AssetId;
+import com.gamzabit.domain.asset.AssetPrice;
 import com.gamzabit.domain.order.OrderEntity;
-import com.gamzabit.domain.order.OrderState;
-import com.gamzabit.domain.order.OrderType;
+import com.gamzabit.domain.order.OrderEntity.OrderState;
 
 public record OrderCreate(
 
     Long symbolId,
     BigDecimal amount,
     Long orderPriceKrw,
-    OrderType orderType
+    OrderEntity.OrderType orderType
 ) {
+
+    public AssetPrice toAssetPrice() {
+        return new AssetPrice(amount);
+    }
+
+    public AssetId toAssetId() {
+        return new AssetId(symbolId);
+    }
 
     public OrderEntity toEntity(Long userId) {
         return OrderEntity.builder()
