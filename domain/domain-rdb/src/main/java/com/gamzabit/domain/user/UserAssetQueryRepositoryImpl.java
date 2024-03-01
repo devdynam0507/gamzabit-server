@@ -35,7 +35,7 @@ public class UserAssetQueryRepositoryImpl implements UserAssetQueryRepository {
                 .select(userAssetEntity)
                 .from(userAssetEntity)
                 .where(
-                    userAssetEntity.user.id.eq(userId)
+                    userAssetEntity.userId.eq(userId)
                        .and(
                            userAssetEntity.asset.symbol.symbolName.eq(symbolName)
                        )

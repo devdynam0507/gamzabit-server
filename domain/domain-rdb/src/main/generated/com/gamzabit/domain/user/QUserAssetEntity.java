@@ -36,7 +36,7 @@ public class QUserAssetEntity extends EntityPathBase<UserAssetEntity> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
-    public final QUserEntity user;
+    public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
     public QUserAssetEntity(String variable) {
         this(UserAssetEntity.class, forVariable(variable), INITS);
@@ -58,7 +58,6 @@ public class QUserAssetEntity extends EntityPathBase<UserAssetEntity> {
         super(type, metadata, inits);
         this.amount = inits.isInitialized("amount") ? new QAssetAmount(forProperty("amount")) : null;
         this.asset = inits.isInitialized("asset") ? new com.gamzabit.domain.asset.QAssetEntity(forProperty("asset"), inits.get("asset")) : null;
-        this.user = inits.isInitialized("user") ? new QUserEntity(forProperty("user"), inits.get("user")) : null;
     }
 
 }

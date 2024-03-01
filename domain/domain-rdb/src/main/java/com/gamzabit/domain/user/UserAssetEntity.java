@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import com.gamzabit.domain.asset.AssetEntity;
 import com.gamzabit.domain.asset.AssetPrice;
 import com.gamzabit.domain.asset.DefaultAssetTypes;
-import com.gamzabit.domain.asset.vo.Assets;
 import com.gamzabit.domain.common.DomainNumber;
 import com.gamzabit.domain.common.EntityBase;
 import com.gamzabit.domain.user.vo.UserAsset;
@@ -36,18 +35,16 @@ public class UserAssetEntity extends EntityBase {
     @Embedded
     private AssetAmount amount;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private UserEntity user;
+    private Long userId;
 
     @ManyToOne
     @JoinColumn(name = "asset_id")
     private AssetEntity asset;
 
     @Builder
-    public UserAssetEntity(AssetAmount amount, UserEntity user, AssetEntity asset) {
+    public UserAssetEntity(AssetAmount amount, Long userId, AssetEntity asset) {
         this.amount = amount;
-        this.user = user;
+        this.userId = userId;
         this.asset = asset;
     }
 

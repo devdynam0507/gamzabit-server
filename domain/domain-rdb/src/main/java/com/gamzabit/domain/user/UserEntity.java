@@ -1,7 +1,9 @@
 package com.gamzabit.domain.user;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.gamzabit.domain.asset.AssetEntity;
 import com.gamzabit.domain.common.EntityBase;
 import com.gamzabit.domain.user.vo.User;
 import com.gamzabit.domain.user.vo.UserCreation;
@@ -48,8 +50,12 @@ public class UserEntity extends EntityBase {
             .build();
     }
 
-    public UserAssetEntity createUserAsset(Long assetId) {
-        return null;
+    public UserAssetEntity createUserAsset(AssetEntity asset) {
+        return UserAssetEntity.builder()
+            .userId(id)
+            .asset(asset)
+            .amount(new AssetAmount(BigDecimal.ZERO))
+            .build();
     }
 
     public void changePassword(String encryptedPassword) {
