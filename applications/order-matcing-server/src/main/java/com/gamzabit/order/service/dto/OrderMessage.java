@@ -2,7 +2,9 @@ package com.gamzabit.order.service.dto;
 
 import java.math.BigDecimal;
 
-public record Order(
+import com.gamzabit.domain.order.OrderEntity.OrderType;
+
+public record OrderMessage(
     Long orderId,
     BigDecimal amount,
     Long orderPriceKrw,

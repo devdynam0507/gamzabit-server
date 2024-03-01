@@ -11,10 +11,13 @@ import lombok.RequiredArgsConstructor;
 public class OrderCanceler {
 
     private final OrderRepository orderRepository;
+    private final OrderTransactionRepository orderTransactionRepository;
 
-    public void cancelOrder(Long userId, Long orderId) {
+    public void cancelOrder(Long orderId) {
         OrderEntity order = orderRepository.findById(orderId)
             .orElseThrow(() -> new OrderNotFoundException(orderId));
         order.cancel();
+        OrderTransactionEntity transactionHistory = order.createTransactionHistory();
+        orderTransactionRepository.save(transactionHistory);
     }
 }

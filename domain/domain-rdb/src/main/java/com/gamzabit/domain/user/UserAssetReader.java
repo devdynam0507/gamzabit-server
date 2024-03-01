@@ -28,7 +28,7 @@ public class UserAssetReader {
 
     public UserAsset getSpecificSymbolUserAsset(User user, String symbolName) {
         Optional<UserAssetEntity> userAssetEntityOptional =
-            userAssetQueryRepository.findByUserIdAndAssetName(user.id().longValue(), symbolName);
+            userAssetQueryRepository.findByUserIdAndAssetName(user.id(), symbolName);
         if (userAssetEntityOptional.isEmpty()) {
             throw new AssetNotFoundException("유저의 '" + symbolName + "' 자산이 존재하지 않습니다.", symbolName);
         }

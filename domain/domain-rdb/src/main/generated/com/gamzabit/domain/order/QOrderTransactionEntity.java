@@ -35,6 +35,10 @@ public class QOrderTransactionEntity extends EntityPathBase<OrderTransactionEnti
 
     public final NumberPath<Long> orderId = createNumber("orderId", Long.class);
 
+    public final EnumPath<OrderEntity.OrderState> orderState = createEnum("orderState", OrderEntity.OrderState.class);
+
+    public final EnumPath<OrderEntity.OrderType> orderType = createEnum("orderType", OrderEntity.OrderType.class);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 

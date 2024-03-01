@@ -1,8 +1,20 @@
 package com.gamzabit.order.service;
 
+import java.math.BigDecimal;
+
 import org.springframework.stereotype.Service;
 
-import com.gamzabit.order.service.dto.Order;
+import com.gamzabit.domain.asset.AssetPrice;
+import com.gamzabit.domain.asset.DefaultAssetTypes;
+import com.gamzabit.domain.order.OrderEntity.OrderType;
+import com.gamzabit.domain.order.OrderReader;
+import com.gamzabit.domain.order.vo.Order;
+import com.gamzabit.domain.user.UserAssetReader;
+import com.gamzabit.domain.user.vo.User;
+import com.gamzabit.domain.user.vo.UserAsset;
+import com.gamzabit.order.service.dto.OrderMessage;
+import com.gamzabit.order.service.exception.OrderAlreadyCancelledException;
+import com.gamzabit.order.service.exception.UserFundsException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -10,7 +22,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderValidator {
 
-    public void validateOrder(Long userId, Order order) {
-        // 주문이 취소되었는지 검사한다.
+    private final OrderReader orderReader;
+    private final UserAssetReader userAssetReader;
+
+    public void validateOrder(Long userId, OrderMessage order) {
+        Long orderId = order.orderId();
+        Order userOrder = orderReader.getUserOrder(userId, orderId);
+        // 취소된 주문인지 검사한다.
+        if (userOrder.orderType() == OrderType.Cancel) {
+            throw new OrderAlreadyCancelledException(orderId);
+        }
+        // 유저가 충분한 자금을 가지고 있는지 확인한다.
+        UserAsset userAsset = userAssetReader.getSpecificSymbolUserAsset(
+            User.createOnlyId(userId), DefaultAssetTypes.KRW.name()
+        );
+        AssetPrice orderKrwPrice = new AssetPrice(BigDecimal.valueOf(order.orderPriceKrw()));
+        if (!userAsset.amount().number().isGreaterThan(orderKrwPrice.number())) {
+            throw new UserFundsException(orderId);
+        }
     }
 }

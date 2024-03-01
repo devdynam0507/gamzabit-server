@@ -11,4 +11,9 @@ public record User(
     Boolean deleted,
     LocalDateTime deletedAt,
     LocalDateTime createdAt
-) {}
+) {
+
+    public static User createOnlyId(Long userId) {
+        return new User(userId, null, null, null, null, null);
+    }
+}

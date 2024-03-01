@@ -2,8 +2,9 @@ package com.gamzabit.order.consumers.dto;
 
 import java.math.BigDecimal;
 
+import com.gamzabit.domain.order.OrderEntity.OrderType;
 import com.gamzabit.domain.order.vo.OrderCreate;
-import com.gamzabit.order.service.dto.Order;
+import com.gamzabit.order.service.dto.OrderMessage;
 
 public record OrderProduceMessage(
     Long symbolId,
@@ -15,8 +16,8 @@ public record OrderProduceMessage(
     Long orderCreationTime
 ) {
 
-    public Order toOrder() {
-        return new Order(orderId, amount, orderPriceKrw, orderType, orderCreationTime);
+    public OrderMessage toOrder() {
+        return new OrderMessage(orderId, amount, orderPriceKrw, orderType, orderCreationTime);
     }
 
     public static OrderProduceMessage from(Long userId, OrderCreate orderCreate, Long orderId, Long orderCreationTime) {

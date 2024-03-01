@@ -50,5 +50,6 @@ public class UserFreezeAssetEntity extends EntityBase {
         this.userId = user.id();
         this.assetId = assetId;
         this.orderId = orderId;
+        this.freezeAmount = new AssetAmount(freezePrice.getPrice());
     }
 }

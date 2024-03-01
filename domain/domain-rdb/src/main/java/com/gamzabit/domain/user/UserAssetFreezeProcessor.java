@@ -1,6 +1,9 @@
 package com.gamzabit.domain.user;
 
+import java.math.BigDecimal;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gamzabit.domain.asset.AssetPrice;
 import com.gamzabit.domain.order.vo.OrderCreate;
@@ -16,6 +19,7 @@ public class UserAssetFreezeProcessor {
     private final UserFreezeAssetRepository userFreezeAssetRepository;
     private final UserAssetProcessor userAssetProcessor;
 
+    @Transactional
     public void unfreeze(User user, Long orderId, String assetTypeString, AssetPrice assetPrice) {
         userAssetProcessor.depositTo(user, assetPrice, assetTypeString);
         userFreezeAssetRepository.deleteByOrderId(orderId);
@@ -36,7 +40,11 @@ public class UserAssetFreezeProcessor {
             orderCreate.toAssetId(),
             orderId
         );
-        userAssetProcessor.withdrawTo(user, orderCreate.toAssetPrice(), assetTypeString);
+        userAssetProcessor.withdrawTo(
+            user,
+            new AssetPrice(BigDecimal.valueOf(orderCreate.orderPriceKrw())),
+            assetTypeString
+        );
 
         userFreezeAssetRepository.save(userFreezeAssetEntity);
     }

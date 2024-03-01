@@ -26,7 +26,7 @@ public class UserAssetProcessor {
 
     public void withdrawTo(User user, AssetPrice withdrawAmount, String assetTypeString) {
         UserAssetEntity userAssetEntity =
-            userAssetQueryRepository.findByUserIdAndAssetName(user.id().longValue(), assetTypeString)
+            userAssetQueryRepository.findByUserIdAndAssetName(user.id(), assetTypeString)
                 .orElseThrow(() ->
                     new AssetNotFoundException("유저의 '" + assetTypeString + "' 자산이 존재하지 않습니다.", assetTypeString)
                 );

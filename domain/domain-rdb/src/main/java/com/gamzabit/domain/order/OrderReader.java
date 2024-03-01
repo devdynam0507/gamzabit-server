@@ -17,7 +17,11 @@ public class OrderReader {
     private final OrderRepository orderRepository;
 
     public Order getUserOrder(User user, Long orderId) {
-        return orderRepository.findByIdAndUserId(orderId, user.id())
+        return getUserOrder(user.id(), orderId);
+    }
+
+    public Order getUserOrder(Long userId, Long orderId) {
+        return orderRepository.findByIdAndUserId(orderId, userId)
             .orElseThrow(() -> new OrderNotFoundException(orderId))
             .toOrderDto();
     }

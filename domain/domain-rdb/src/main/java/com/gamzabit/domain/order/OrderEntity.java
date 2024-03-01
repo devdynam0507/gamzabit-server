@@ -64,7 +64,23 @@ public class OrderEntity extends EntityBase {
     }
 
     public void cancel() {
-        this.orderState = OrderState.Cancel;
+        changeState(OrderState.Cancel);
+    }
+
+    public void pending() {
+        changeState(OrderState.Pending);
+    }
+
+    public void available() {
+        changeState(OrderState.Available);
+    }
+
+    public void invalid() {
+        changeState(OrderState.Invalid);
+    }
+
+    public void conclude() {
+        changeState(OrderState.Concluded);
     }
 
     public void changeState(OrderState orderState) {
@@ -90,10 +106,12 @@ public class OrderEntity extends EntityBase {
             .userId(userId)
             .concludedKrw(orderPrice)
             .concludedQuantity(orderQuantity)
+            .orderState(orderState)
+            .orderType(orderType)
             .build();
     }
 
     public enum OrderType { Buy, Sell, Cancel }
 
-    public enum OrderState { Pending, Available, Concluded, Cancel }
+    public enum OrderState { Pending, Available, Concluded, Cancel, Invalid }
 }
