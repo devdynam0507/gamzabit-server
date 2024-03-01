@@ -1,11 +1,14 @@
 package com.gamzabit.domain.user;
 
+import org.springframework.stereotype.Service;
+
 import com.gamzabit.domain.asset.AssetPrice;
 import com.gamzabit.domain.asset.exception.AssetNotFoundException;
 import com.gamzabit.domain.user.vo.User;
 
 import lombok.RequiredArgsConstructor;
 
+@Service
 @RequiredArgsConstructor
 public class UserAssetProcessor {
 
@@ -13,7 +16,7 @@ public class UserAssetProcessor {
 
     public void depositTo(User user, AssetPrice assetPrice, String assetTypeString) {
         UserAssetEntity userAssetEntity =
-            userAssetQueryRepository.findByUserIdAndAssetName(user.id().longValue(), assetTypeString)
+            userAssetQueryRepository.findByUserIdAndAssetName(user.id(), assetTypeString)
                 .orElseThrow(() ->
                     new AssetNotFoundException("유저의 '" + assetTypeString + "' 자산이 존재하지 않습니다.", assetTypeString)
                 );

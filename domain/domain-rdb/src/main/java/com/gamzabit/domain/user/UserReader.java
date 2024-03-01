@@ -18,7 +18,7 @@ public class UserReader {
     private final UserRepository userRepository;
 
     public User findUserByEmail(String email) {
-        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+        Optional<UserEntity> userOptional = userRepository.findByUserCredentials_Email(email);
 
         return userOptional.map(UserEntity::toUser)
                            .orElseThrow(() -> new UserNotFoundException(email));

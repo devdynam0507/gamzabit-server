@@ -16,6 +16,6 @@ public class OrderTransactionReader {
     private final OrderTransactionQueryRepository orderTransactionRepository;
 
     public List<OrderHistory> getOrderHistory(User user) {
-        return orderTransactionRepository.findAllByUserId(user.id().longValue());
+        return orderTransactionRepository.findAllByUserId(user.id());
     }
 }

@@ -2,12 +2,11 @@ package com.gamzabit.domain.user.vo;
 
 import java.time.LocalDateTime;
 
-import com.gamzabit.domain.user.UserId;
+import com.gamzabit.domain.user.UserCredentials;
 
 public record User(
-    UserId id,
-    String email,
-    String password,
+    Long id,
+    UserCredentials userCredentials,
     String nickname,
     Boolean deleted,
     LocalDateTime deletedAt,

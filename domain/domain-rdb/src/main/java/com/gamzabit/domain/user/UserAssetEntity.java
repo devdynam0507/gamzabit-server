@@ -61,15 +61,6 @@ public class UserAssetEntity extends EntityBase {
         return new AssetPrice(price.bigNumber());
     }
 
-    public AssetAmount calculateBuyAmount(AssetPrice buyPrice) {
-        if (isKrw()) {
-            return new AssetAmount(BigDecimal.ZERO);
-        }
-        DomainNumber price = buyPrice.number().divide(asset.getAssetPrice().number());
-
-        return new AssetAmount(price.bigNumber());
-    }
-
     public boolean isKrw() {
         return asset.getSymbol().getSymbolName().equals(DefaultAssetTypes.KRW.name());
     }
@@ -87,6 +78,10 @@ public class UserAssetEntity extends EntityBase {
         }
         BigDecimal subtractedAmount = amount.getAmount().subtract(assetPrice.getPrice());
         amount.setAssetAmount(subtractedAmount);
+    }
+
+    public UserAssetTransactionEntity createAssetHistory() {
+        return null;
     }
 
     public UserAsset toUserAsset() {

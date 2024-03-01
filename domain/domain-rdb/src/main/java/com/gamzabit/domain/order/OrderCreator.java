@@ -17,10 +17,10 @@ public class OrderCreator {
     private final AssetValidator assetValidator;
     private final UserValidator userValidator;
 
-    public OrderId createOrder(User user, OrderCreate orderCreate) {
-        assetValidator.validateAssetExists(orderCreate.toAssetId());
+    public Long createOrder(User user, OrderCreate orderCreate) {
+        assetValidator.validateAssetExists(orderCreate.symbolId());
         userValidator.validateUserExists(user.id());
-        OrderEntity order = orderCreate.toEntity(user.id().longValue());
+        OrderEntity order = orderCreate.toEntity(user.id());
         OrderEntity createdOrder = orderRepository.save(order);
 
         return createdOrder.getId();

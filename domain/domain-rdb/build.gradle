@@ -29,13 +29,12 @@ dependencies {
 
 def querydslDir = layout.buildDirectory.dir("generated/querydsl").get().asFile
 
-println(querydslDir)
 clean {
-    delete file(querydslDir)
+    delete file("$querydslDir/src/main/generated")
 }
 
 tasks.withType(JavaCompile) {
-    delete file(querydslDir)
+    delete file("$querydslDir/src/main/generated")
     options.generatedSourceOutputDirectory = file(querydslDir)
 }
 

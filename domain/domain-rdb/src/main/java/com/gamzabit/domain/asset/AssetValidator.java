@@ -1,21 +1,21 @@
 package com.gamzabit.domain.asset;
 
-import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 import com.gamzabit.domain.asset.exception.AssetException;
 import com.gamzabit.domain.asset.exception.AssetNotFoundException;
 
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
 public class AssetValidator {
 
     private final AssetRepository assetRepository;
 
-    public AssetValidator(AssetRepository assetRepository) {
-        this.assetRepository = assetRepository;
-    }
-
-    public void validateAssetExists(AssetId assetId) {
+    public void validateAssetExists(Long assetId) {
         validate(
-            assetRepository.findById(assetId.getId())
+            assetRepository.findById(assetId)
                 .orElseThrow(() -> new AssetNotFoundException("거래소 자산을 찾을 수 없습니다.", String.valueOf(assetId)))
         );
     }

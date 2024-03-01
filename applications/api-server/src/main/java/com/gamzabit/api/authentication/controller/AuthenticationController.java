@@ -27,7 +27,7 @@ public class AuthenticationController {
         User user = authenticationService.signup(
             signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getNickname()
         );
-        SignupSuccessResponse response = new SignupSuccessResponse(user.email(), user.nickname());
+        SignupSuccessResponse response = new SignupSuccessResponse(user.userCredentials().getEmail(), user.nickname());
 
         return Responses.ok("회원가입을 성공적으로 완료하였습니다.", response);
     }

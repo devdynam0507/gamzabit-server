@@ -2,7 +2,6 @@ package com.gamzabit.domain.user;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -28,7 +27,7 @@ public class UserAssetCalculator {
 
     public UserAssetWithKrw getAssetsKrwPrice(User user) {
         UserAssetEntity userEntity =
-            userAssetQueryRepository.findByUserIdAndAssetName(user.id().longValue(), DefaultAssetTypes.KRW.name())
+            userAssetQueryRepository.findByUserIdAndAssetName(user.id(), DefaultAssetTypes.KRW.name())
                 .orElseThrow(() -> new AssetNotFoundException("KRW 자산을 찾을 수 없습니다.", DefaultAssetTypes.KRW.name()));
         AssetPrice assetPrice = userEntity.calculateTotalKrwPrice();
 
@@ -37,7 +36,7 @@ public class UserAssetCalculator {
 
     public UserAssetWithKrw convertToKrwFromAsset(User user, String assetName) {
         UserAssetEntity userAssetEntity =
-            userAssetQueryRepository.findByUserIdAndAssetName(user.id().longValue(), assetName)
+            userAssetQueryRepository.findByUserIdAndAssetName(user.id(), assetName)
                 .orElseThrow(() -> new AssetNotFoundException(assetName + "를 찾을 수 없습니다.", assetName));
         AssetEntity assetEntity = userAssetEntity.getAsset();
         assetValidator.validate(assetEntity);
@@ -48,7 +47,7 @@ public class UserAssetCalculator {
 
     public AggregatedUserAsset getTotalKrwPriceOwnAssets(User user) {
         List<UserAssetEntity> userAssets =
-            userAssetQueryRepository.findAllByUserId(user.id().longValue());
+            userAssetQueryRepository.findAllByUserId(user.id());
         BigDecimal assetPriceBigDecimal = userAssets.stream()
             .map(userAssetEntity ->
                 userAssetEntity.getAsset().calculateBuyPrice(

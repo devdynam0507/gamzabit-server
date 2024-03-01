@@ -40,7 +40,7 @@ public class AuthenticationService {
     public SigninResponse signin(String email, String password) {
         try {
             User user = userReader.findUserByEmail(email);
-            boolean isPasswordMatched = passwordEncoder.matches(password, user.password());
+            boolean isPasswordMatched = passwordEncoder.matches(password, user.userCredentials().getPassword());
             if (!isPasswordMatched) {
                 throw new AuthenticationException("비밀번호가 일치하지 않습니다.");
             }

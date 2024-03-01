@@ -1,12 +1,9 @@
 package com.gamzabit.domain.order;
 
-import java.math.BigDecimal;
-
 import com.gamzabit.domain.asset.AssetPrice;
 import com.gamzabit.domain.common.EntityBase;
 import com.gamzabit.domain.user.AssetAmount;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

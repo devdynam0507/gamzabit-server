@@ -2,19 +2,18 @@ package com.gamzabit.domain.order;
 
 import java.math.BigDecimal;
 
-import com.gamzabit.domain.asset.AssetId;
 import com.gamzabit.domain.asset.AssetPrice;
 import com.gamzabit.domain.common.EntityBase;
 import com.gamzabit.domain.order.vo.Order;
 import com.gamzabit.domain.user.AssetAmount;
-import com.gamzabit.domain.user.UserId;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -27,15 +26,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class OrderEntity extends EntityBase {
 
-    @EmbeddedId
-    private OrderId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private Long userId;
 
     private Long assetId;
-
-    private AssetId assetId2;
-    private UserId userId2;
 
     @Embedded
     private AssetAmount orderQuantity;
@@ -74,15 +71,11 @@ public class OrderEntity extends EntityBase {
         this.orderState = orderState;
     }
 
-    public OrderId toOrderId() {
-        return id;
-    }
-
     public Order toOrderDto() {
         return new Order(
-            toOrderId(),
-            userId2,
-            assetId2,
+            id,
+            userId,
+            assetId,
             orderQuantity,
             orderPrice,
             orderType,
@@ -93,7 +86,7 @@ public class OrderEntity extends EntityBase {
 
     public OrderTransactionEntity createTransactionHistory() {
         return OrderTransactionEntity.builder()
-            .orderId(id.getId())
+            .orderId(id)
             .userId(userId)
             .concludedKrw(orderPrice)
             .concludedQuantity(orderQuantity)

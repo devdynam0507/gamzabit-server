@@ -24,7 +24,7 @@ public class UserAssetQueryRepositoryImpl implements UserAssetQueryRepository {
             .select(userAssetEntity)
             .from(userAssetEntity)
             .leftJoin(QUserEntity.userEntity)
-            .on(QUserEntity.userEntity.id.id.eq(userId))
+            .on(QUserEntity.userEntity.id.eq(userId))
             .fetch();
     }
 
@@ -35,7 +35,7 @@ public class UserAssetQueryRepositoryImpl implements UserAssetQueryRepository {
                 .select(userAssetEntity)
                 .from(userAssetEntity)
                 .where(
-                    userAssetEntity.user.id.id.eq(userId)
+                    userAssetEntity.user.id.eq(userId)
                        .and(
                            userAssetEntity.asset.symbol.symbolName.eq(symbolName)
                        )

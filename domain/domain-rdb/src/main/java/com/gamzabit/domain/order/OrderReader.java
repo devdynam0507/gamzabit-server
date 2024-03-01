@@ -16,14 +16,14 @@ public class OrderReader {
 
     private final OrderRepository orderRepository;
 
-    public Order getUserOrder(User user, OrderId orderId) {
-        return orderRepository.findByIdAndUserId(orderId.getId(), user.id().longValue())
-            .orElseThrow(() -> new OrderNotFoundException(orderId.getId()))
+    public Order getUserOrder(User user, Long orderId) {
+        return orderRepository.findByIdAndUserId(orderId, user.id())
+            .orElseThrow(() -> new OrderNotFoundException(orderId))
             .toOrderDto();
     }
 
     public List<Order> getUserOrders(User user) {
-        List<OrderEntity> orders = orderRepository.findByUserId(user.id().longValue());
+        List<OrderEntity> orders = orderRepository.findByUserId(user.id());
 
         return toOrders(orders);
     }

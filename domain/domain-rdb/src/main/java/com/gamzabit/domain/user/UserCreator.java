@@ -18,7 +18,7 @@ public class UserCreator {
 
     public User createUser(UserCreation userCreation) {
         String email = userCreation.email();
-        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+        Optional<UserEntity> userOptional = userRepository.findByUserCredentials_Email(email);
         if (userOptional.isPresent()) {
             throw new UserAlreadyExistsException(email);
         }

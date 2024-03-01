@@ -3,7 +3,6 @@ package com.gamzabit.domain.user;
 import org.springframework.stereotype.Service;
 
 import com.gamzabit.domain.asset.AssetPrice;
-import com.gamzabit.domain.order.OrderId;
 import com.gamzabit.domain.order.vo.OrderCreate;
 import com.gamzabit.domain.user.vo.User;
 import com.gamzabit.domain.user.vo.UserAsset;
@@ -17,15 +16,15 @@ public class UserAssetFreezeProcessor {
     private final UserFreezeAssetRepository userFreezeAssetRepository;
     private final UserAssetProcessor userAssetProcessor;
 
-    public void unfreeze(User user, OrderId orderId, String assetTypeString, AssetPrice assetPrice) {
+    public void unfreeze(User user, Long orderId, String assetTypeString, AssetPrice assetPrice) {
         userAssetProcessor.depositTo(user, assetPrice, assetTypeString);
-        userFreezeAssetRepository.deleteByOrderId(orderId.longValue());
+        userFreezeAssetRepository.deleteByOrderId(orderId);
     }
 
     public void doFreeze(
         OrderCreate orderCreate,
         User user,
-        OrderId orderId,
+        Long orderId,
         UserAsset userAsset,
         String assetTypeString
     ) {

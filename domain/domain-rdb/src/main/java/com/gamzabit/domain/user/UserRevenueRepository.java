@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRevenueRepository extends JpaRepository<UserRevenueEntity, Long> {
 
-    List<UserRevenueEntity> findByUser_id(Long userId);
+    List<UserRevenueEntity> findByUser_Id(Long userId);
 }

@@ -1,15 +1,17 @@
 package com.gamzabit.domain.asset;
 
+import org.springframework.stereotype.Service;
+
 import com.gamzabit.domain.asset.exception.AssetNotFoundException;
 import com.gamzabit.domain.asset.vo.Assets;
 
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
 public class AssetReader {
 
     private final AssetRepository assetRepository;
-
-    public AssetReader(AssetRepository assetRepository) {
-        this.assetRepository = assetRepository;
-    }
 
     public Assets getSymbolById(Long id) {
         AssetEntity asset = assetRepository.findById(id)

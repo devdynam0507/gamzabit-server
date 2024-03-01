@@ -2,6 +2,7 @@ package com.gamzabit.api.order.service.dto;
 
 import java.math.BigDecimal;
 
+import com.gamzabit.domain.order.OrderEntity;
 import com.gamzabit.domain.order.vo.OrderCreate;
 
 public record OrderProduceMessage(
@@ -10,7 +11,7 @@ public record OrderProduceMessage(
     Long orderId,
     BigDecimal amount,
     Long orderPriceKrw,
-    OrderType orderType,
+    OrderEntity.OrderType orderType,
     Long orderCreationTime
 ) {
 
