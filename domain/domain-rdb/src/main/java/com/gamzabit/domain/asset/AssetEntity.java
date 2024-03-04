@@ -54,10 +54,16 @@ public class AssetEntity extends EntityBase {
     }
 
     public AssetPrice calculateBuyPrice(AssetAmount amount) {
+        return calculateBuyPrice(amount, assetPrice);
+    }
+
+    public AssetPrice calculateBuyPrice(AssetAmount amount, AssetPrice specificAssetPrice) {
         if (getSymbol().getSymbolName().equals("KRW")) {
             return new AssetPrice(amount.getAmount());
         }
-        return new AssetPrice(assetPrice.number().multiply(amount.number()).bigNumber());
+        return new AssetPrice(
+            specificAssetPrice.number().multiply(amount.number()).bigNumber()
+        );
     }
 
     public Assets toAssets() {

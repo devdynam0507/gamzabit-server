@@ -20,7 +20,7 @@ public class OrderValidator {
     public void validateOrder(User user, OrderCreate orderCreate) {
         UserAssetWithKrw ownKrw = userAssetCalculator.getAssetsKrwPrice(user);
         AssetPrice buyPrice = userAssetCalculator.calculateBuyPrice(
-            new AssetAmount(orderCreate.amount()), orderCreate.symbolId());
+            new AssetAmount(orderCreate.amount()), orderCreate.symbolId(), orderCreate.assetBuyPriceKrw());
 
         if (ownKrw.krw().number().isLessThan(buyPrice.number())) {
             throw new OrderValidationException("자금이 부족합니다.", null);

@@ -31,7 +31,7 @@ public class QOrderEntity extends EntityPathBase<OrderEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.gamzabit.domain.asset.QAssetPrice orderPrice;
+    public final QOrderPrice orderPrice;
 
     public final com.gamzabit.domain.user.QAssetAmount orderQuantity;
 
@@ -62,7 +62,7 @@ public class QOrderEntity extends EntityPathBase<OrderEntity> {
 
     public QOrderEntity(Class<? extends OrderEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.orderPrice = inits.isInitialized("orderPrice") ? new com.gamzabit.domain.asset.QAssetPrice(forProperty("orderPrice")) : null;
+        this.orderPrice = inits.isInitialized("orderPrice") ? new QOrderPrice(forProperty("orderPrice")) : null;
         this.orderQuantity = inits.isInitialized("orderQuantity") ? new com.gamzabit.domain.user.QAssetAmount(forProperty("orderQuantity")) : null;
     }
 

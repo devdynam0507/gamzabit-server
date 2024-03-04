@@ -4,8 +4,10 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gamzabit.domain.order.OrderEntity.OrderType;
 import com.gamzabit.infrastructure.kafka.KafkaMessageListener;
 import com.gamzabit.order.consumers.dto.OrderProduceMessage;
+import com.gamzabit.order.core.DataSourceOrderEngine;
 import com.gamzabit.order.service.OrderValidator;
 import com.gamzabit.order.service.exception.OrderValidationException;
 
@@ -17,6 +19,7 @@ public class OrderConsumer implements KafkaMessageListener<String> {
 
     private final ObjectMapper objectMapper;
     private final OrderValidator orderValidator;
+    private final DataSourceOrderEngine orderEngine;
 
     @Override
     public void onMessage(String orderJson) {
@@ -24,7 +27,11 @@ public class OrderConsumer implements KafkaMessageListener<String> {
             OrderProduceMessage orderProduceMessage = objectMapper.readValue(orderJson, OrderProduceMessage.class);
 
             orderValidator.validateOrder(orderProduceMessage.userId(), orderProduceMessage.toOrder());
-
+            switch (orderProduceMessage.orderType()) {
+                case Buy -> orderEngine.buy(orderProduceMessage);
+                case Sell -> orderEngine.sell(orderProduceMessage);
+                default -> throw new UnsupportedOperationException("지원되지 않는 매칭 타입입니다.");
+            }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (OrderValidationException e) {

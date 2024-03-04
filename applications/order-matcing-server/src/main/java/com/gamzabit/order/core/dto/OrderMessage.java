@@ -1,4 +1,4 @@
-package com.gamzabit.order.service.dto;
+package com.gamzabit.order.core.dto;
 
 import java.math.BigDecimal;
 
@@ -8,7 +8,6 @@ public record OrderMessage(
     Long orderId,
     BigDecimal amount,
     Long orderPriceKrw,
-    BigDecimal assetBuyPriceKrw,
     OrderType orderType,
     Long orderCreationTime
 ) {}

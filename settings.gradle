@@ -9,3 +9,6 @@ findProject(':domain:domain-rdb')?.name = 'domain-rdb'
 include 'infrastructure'
 include 'infrastructure:kafka-common'
 findProject(':infrastructure:kafka-common')?.name = 'kafka-common'
+include 'domain:domain-redis'
+findProject(':domain:domain-redis')?.name = 'domain-redis'
+

@@ -13,6 +13,7 @@ public record Order(
     Long assetId,
     AssetAmount orderQuantity,
     AssetPrice orderPrice,
+    AssetPrice assetPrice,
     OrderType orderType,
     OrderState orderState,
     LocalDateTime orderDate

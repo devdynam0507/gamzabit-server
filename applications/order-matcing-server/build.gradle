@@ -12,6 +12,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     implementation project(':domain:domain-rdb')
+    implementation project(':domain:domain-redis')
     implementation project(':infrastructure:kafka-common')
 }
 

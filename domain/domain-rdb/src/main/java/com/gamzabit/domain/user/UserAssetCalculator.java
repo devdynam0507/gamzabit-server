@@ -68,4 +68,12 @@ public class UserAssetCalculator {
 
         return asset.calculateBuyPrice(amount);
     }
+
+    public AssetPrice calculateBuyPrice(AssetAmount amount, Long assetId, BigDecimal assetPrice) {
+        AssetEntity asset = assetRepository.findById(assetId)
+            .orElseThrow(() -> new AssetNotFoundException(assetId + "를 찾을 수 없습니다.", String.valueOf(assetId)));
+        assetValidator.validate(asset);
+
+        return asset.calculateBuyPrice(amount, new AssetPrice(assetPrice));
+    }
 }

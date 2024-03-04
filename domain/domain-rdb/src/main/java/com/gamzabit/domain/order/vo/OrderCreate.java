@@ -11,6 +11,7 @@ public record OrderCreate(
     Long symbolId,
     BigDecimal amount,
     Long orderPriceKrw,
+    BigDecimal assetBuyPriceKrw,
     OrderEntity.OrderType orderType
 ) {
 
@@ -25,6 +26,7 @@ public record OrderCreate(
     public OrderEntity toEntity(Long userId) {
         return OrderEntity.builder()
             .orderPrice(orderPriceKrw)
+            .assetBuyPrice(assetBuyPriceKrw)
             .orderQuantity(amount)
             .assetId(symbolId)
             .userId(userId)

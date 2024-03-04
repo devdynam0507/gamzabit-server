@@ -38,7 +38,7 @@ public class OrderEntity extends EntityBase {
     private AssetAmount orderQuantity;
 
     @Embedded
-    private AssetPrice orderPrice;
+    private OrderPrice orderPrice;
 
     @Enumerated(EnumType.STRING)
     private OrderType orderType;
@@ -52,13 +52,17 @@ public class OrderEntity extends EntityBase {
         Long assetId,
         BigDecimal orderQuantity,
         Long orderPrice,
+        BigDecimal assetBuyPrice,
         OrderType orderType,
         OrderState orderState
     ) {
         this.userId = userId;
         this.assetId = assetId;
         this.orderQuantity = new AssetAmount(orderQuantity);
-        this.orderPrice = new AssetPrice(BigDecimal.valueOf(orderPrice));
+        this.orderPrice = new OrderPrice(
+            BigDecimal.valueOf(orderPrice),
+            assetBuyPrice
+        );;
         this.orderType = orderType;
         this.orderState = orderState;
     }
@@ -93,7 +97,8 @@ public class OrderEntity extends EntityBase {
             userId,
             assetId,
             orderQuantity,
-            orderPrice,
+            new AssetPrice(orderPrice.getOrderPriceKrw()),
+            new AssetPrice(orderPrice.getAssetPriceKrw()),
             orderType,
             orderState,
             getCreatedAt()
@@ -104,7 +109,7 @@ public class OrderEntity extends EntityBase {
         return OrderTransactionEntity.builder()
             .orderId(id)
             .userId(userId)
-            .concludedKrw(orderPrice)
+            .concludedKrw(new AssetPrice(orderPrice.getAssetPriceKrw()))
             .concludedQuantity(orderQuantity)
             .orderState(orderState)
             .orderType(orderType)

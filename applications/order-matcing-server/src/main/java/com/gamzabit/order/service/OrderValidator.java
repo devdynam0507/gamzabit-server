@@ -32,13 +32,5 @@ public class OrderValidator {
         if (userOrder.orderType() == OrderType.Cancel) {
             throw new OrderAlreadyCancelledException(orderId);
         }
-        // 유저가 충분한 자금을 가지고 있는지 확인한다.
-        UserAsset userAsset = userAssetReader.getSpecificSymbolUserAsset(
-            User.createOnlyId(userId), DefaultAssetTypes.KRW.name()
-        );
-        AssetPrice orderKrwPrice = new AssetPrice(BigDecimal.valueOf(order.orderPriceKrw()));
-        if (!userAsset.amount().number().isGreaterThan(orderKrwPrice.number())) {
-            throw new UserFundsException(orderId);
-        }
     }
 }
