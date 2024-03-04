@@ -14,6 +14,7 @@ dependencies {
     implementation project(':domain:domain-rdb')
     implementation project(':domain:domain-redis')
     implementation project(':infrastructure:kafka-common')
+    implementation project(':infrastructure:order-engine')
 }
 
 test {

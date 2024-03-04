@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import com.gamzabit.domain.order.OrderEntity.OrderType;
 import com.gamzabit.domain.order.vo.OrderCreate;
-import com.gamzabit.domain.redis.orderbook.dto.OrderBookCreate;
+import com.gamzabit.order.core.OrderEngineIncomingMessage;
 import com.gamzabit.order.service.dto.OrderMessage;
 
 public record OrderProduceMessage(
@@ -17,9 +17,12 @@ public record OrderProduceMessage(
     OrderType orderType,
     Long orderCreationTime
 ) {
+    public OrderMessage toOrder() {
+        return new OrderMessage(orderId, amount, orderPriceKrw, assetBuyPriceKrw, orderType, orderCreationTime);
+    }
 
-    public OrderBookCreate toOrderBookCreationDto() {
-        return new OrderBookCreate(
+    public OrderEngineIncomingMessage toOrderEngineMessage() {
+        return new OrderEngineIncomingMessage(
             symbolId,
             userId,
             orderId,
@@ -29,10 +32,6 @@ public record OrderProduceMessage(
             orderType.name(),
             orderCreationTime
         );
-    }
-
-    public OrderMessage toOrder() {
-        return new OrderMessage(orderId, amount, orderPriceKrw, assetBuyPriceKrw, orderType, orderCreationTime);
     }
 
     public static OrderProduceMessage from(Long userId, OrderCreate orderCreate, Long orderId, Long orderCreationTime) {

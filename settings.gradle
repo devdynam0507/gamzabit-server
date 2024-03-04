@@ -11,4 +11,6 @@ include 'infrastructure:kafka-common'
 findProject(':infrastructure:kafka-common')?.name = 'kafka-common'
 include 'domain:domain-redis'
 findProject(':domain:domain-redis')?.name = 'domain-redis'
+include 'infrastructure:order-engine'
+findProject(':infrastructure:order-engine')?.name = 'order-engine'
 

@@ -5,9 +5,9 @@ import java.util.List;
 import com.gamzabit.domain.redis.orderbook.OrderBookProcessor;
 import com.gamzabit.domain.redis.orderbook.dto.OrderBookCreate;
 import com.gamzabit.domain.redis.orderbook.dto.OrderResults;
-import com.gamzabit.order.consumers.dto.OrderProduceMessage;
+import com.gamzabit.engine.OrderProcessorAdapter;
 
-public class RedisOrderProcessorAdapter extends AbstractOrderProcessorAdapter<OrderResults, OrderBookCreate> {
+public class RedisOrderProcessorAdapter implements OrderProcessorAdapter<OrderResults, OrderEngineIncomingMessage> {
 
     private final OrderBookProcessor orderBookProcessor;
 
@@ -16,22 +16,30 @@ public class RedisOrderProcessorAdapter extends AbstractOrderProcessorAdapter<Or
     }
 
     @Override
-    public OrderResults buy(OrderBookCreate newOrderBook) {
-        return orderBookProcessor.buy(newOrderBook);
+    public OrderResults buy(OrderEngineIncomingMessage orderMessage) {
+        return orderBookProcessor.buy(orderMessage.toOrderBookCreationDto());
     }
 
     @Override
-    public OrderResults sell(OrderBookCreate orderMessage) {
-        return orderBookProcessor.sell(orderMessage);
+    public OrderResults sell(OrderEngineIncomingMessage orderMessage) {
+        return orderBookProcessor.sell(orderMessage.toOrderBookCreationDto());
     }
 
     @Override
-    public void saveBuy(OrderBookCreate orderMessage) {
-        orderBookProcessor.saveOrder(orderMessage);
+    public void save(OrderEngineIncomingMessage orderMessage) {
+        orderBookProcessor.saveOrder(orderMessage.toOrderBookCreationDto());
     }
 
     @Override
-    public void saveBuys(List<OrderBookCreate> orderMessages) {
-        orderBookProcessor.saveAllOrders(orderMessages);
+    public void saveAll(List<OrderEngineIncomingMessage> orderMessages) {
+        List<OrderBookCreate> orderBookCreates = orderMessages.stream()
+            .map(OrderEngineIncomingMessage::toOrderBookCreationDto)
+            .toList();
+
+        saveAllOrders(orderBookCreates);
+    }
+
+    public void saveAllOrders(List<OrderBookCreate> orderBookCreates) {
+        orderBookProcessor.saveAllOrders(orderBookCreates);
     }
 }

@@ -5,57 +5,53 @@ import java.util.List;
 import java.util.function.Function;
 
 import com.gamzabit.domain.redis.orderbook.dto.OrderBookCreate;
+import com.gamzabit.domain.redis.orderbook.dto.OrderBookOrderItem;
 import com.gamzabit.domain.redis.orderbook.dto.OrderResults;
 import com.gamzabit.domain.redis.orderbook.dto.OrderTransaction;
-import com.gamzabit.order.consumers.dto.OrderProduceMessage;
+import com.gamzabit.engine.DataSourceOrderEngine;
+import com.gamzabit.engine.OrderPostProcessor;
+import com.gamzabit.engine.OrderProcessorAdapter;
 
-public class RedisDataSourceOrderEngine implements DataSourceOrderEngine {
+public class RedisDataSourceOrderEngine implements DataSourceOrderEngine<OrderEngineIncomingMessage> {
 
-    private final OrderProcessorAdapter<OrderResults, OrderBookCreate> orderBookProcessor;
+    private final OrderProcessorAdapter<OrderResults, OrderEngineIncomingMessage> orderBookProcessor;
+    private final OrderPostProcessor<OrderBookCreate> postProcessor;
 
-    public RedisDataSourceOrderEngine(OrderProcessorAdapter<OrderResults, OrderBookCreate> orderBookProcessor) {
+    public RedisDataSourceOrderEngine(
+        OrderProcessorAdapter<OrderResults, OrderEngineIncomingMessage> orderBookProcessor,
+        OrderPostProcessor<OrderBookCreate> postProcessor
+    ) {
         this.orderBookProcessor = orderBookProcessor;
+        this.postProcessor = postProcessor;
     }
 
-    void process(OrderProduceMessage orderProduceMessage, Function<OrderBookCreate, OrderResults> adapterProcessor) {
-        List<OrderBookCreate> orderBookOrderItems = new ArrayList<>();
-        List<OrderTransaction> transactions = new ArrayList<>();
-        List<OrderBookCreate> remainOrders = new ArrayList<>();
+    void process(
+        OrderEngineIncomingMessage orderProduceMessage,
+        Function<OrderEngineIncomingMessage, OrderResults> adapterProcessor
+    ) {
+        OrderResults orderResults = adapterProcessor.apply(orderProduceMessage);
 
-        orderBookOrderItems.add(orderProduceMessage.toOrderBookCreationDto());
-
-        // 1. orderBookOrderItems를 순회한다.
-        // 2. 구매, 판매 로직을 실행한다. 이 때 모든 거래가 완료되지 않은 경우 (판매 수량이 쪼개졌다거나) remainOrders 에 주문을 다시 추가한다.
-        // 3. 만약 주문 처리 결과가 없다면 남은 주문에 추가하고 끝낸다.
-        // 4. 거래 결과를 모두 저장한다.
-        // 5. 거래 결과를 거래 서버에 알린다.
-
-        for (OrderBookCreate orderBookCreateDto : orderBookOrderItems) {
-            OrderResults orderResults = adapterProcessor.apply(orderBookCreateDto);
-            // 만약 처리 결과가 없을 경우 구매 목록에 저장
-            if (orderResults.isEmpty()) {
-                remainOrders.add(orderBookCreateDto);
-                continue;
-            }
-            // 거래 결과 추가
-            transactions.addAll(orderResults.concludedOrders());
-            // 분기된 거래를 다시 추가
-            orderResults.orderBranches().forEach(remainOrder -> remainOrders.add(remainOrder.toOrderBookCreationDto()));
+        List<OrderBookCreate> remainOrders;
+        if (orderResults.isEmpty()) {
+            remainOrders = List.of(orderProduceMessage.toOrderBookCreationDto());
         }
-
-        // 처리가 끝나고 남은 주문을 레디스에 저장한다.
-        if (!remainOrders.isEmpty()) {
-            orderBookProcessor.saveBuys(remainOrders);
+        else {
+            remainOrders = orderResults.orderBranches().stream()
+                .map(OrderBookOrderItem::toOrderBookCreationDto)
+                .toList();
         }
+        List<OrderTransaction> transactions = new ArrayList<>(orderResults.concludedOrders());
+
+        postProcessor.handle(remainOrders);
         sendTransactions(transactions);
     }
 
-    public void buy(OrderProduceMessage orderMessage) {
+    public void buy(OrderEngineIncomingMessage orderMessage) {
         process(orderMessage, orderBookProcessor::buy);
     }
 
     @Override
-    public void sell(OrderProduceMessage orderMessage) {
+    public void sell(OrderEngineIncomingMessage orderMessage) {
         process(orderMessage, orderBookProcessor::sell);
     }
 

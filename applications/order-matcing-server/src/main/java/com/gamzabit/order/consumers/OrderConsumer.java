@@ -4,10 +4,10 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gamzabit.domain.order.OrderEntity.OrderType;
+import com.gamzabit.engine.DataSourceOrderEngine;
 import com.gamzabit.infrastructure.kafka.KafkaMessageListener;
 import com.gamzabit.order.consumers.dto.OrderProduceMessage;
-import com.gamzabit.order.core.DataSourceOrderEngine;
+import com.gamzabit.order.core.OrderEngineIncomingMessage;
 import com.gamzabit.order.service.OrderValidator;
 import com.gamzabit.order.service.exception.OrderValidationException;
 
@@ -19,17 +19,18 @@ public class OrderConsumer implements KafkaMessageListener<String> {
 
     private final ObjectMapper objectMapper;
     private final OrderValidator orderValidator;
-    private final DataSourceOrderEngine orderEngine;
+    private final DataSourceOrderEngine<OrderEngineIncomingMessage> orderEngine;
 
     @Override
     public void onMessage(String orderJson) {
         try {
             OrderProduceMessage orderProduceMessage = objectMapper.readValue(orderJson, OrderProduceMessage.class);
+            OrderEngineIncomingMessage orderEngineIncomingMessage = orderProduceMessage.toOrderEngineMessage();
 
             orderValidator.validateOrder(orderProduceMessage.userId(), orderProduceMessage.toOrder());
             switch (orderProduceMessage.orderType()) {
-                case Buy -> orderEngine.buy(orderProduceMessage);
-                case Sell -> orderEngine.sell(orderProduceMessage);
+                case Buy -> orderEngine.buy(orderEngineIncomingMessage);
+                case Sell -> orderEngine.sell(orderEngineIncomingMessage);
                 default -> throw new UnsupportedOperationException("지원되지 않는 매칭 타입입니다.");
             }
         } catch (JsonProcessingException e) {
