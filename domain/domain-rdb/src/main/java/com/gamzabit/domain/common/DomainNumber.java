@@ -40,11 +40,35 @@ public record DomainNumber(
     }
 
     public boolean isGreaterThan(DomainNumber target) {
-        return bigNumber.compareTo(target.bigNumber) > 0;
+        return isGreaterThan(target.bigNumber);
+    }
+
+    public boolean isGreaterThan(BigDecimal bigDecimal) {
+        return bigNumber.compareTo(bigDecimal) > 0;
+    }
+
+    public boolean isGreaterOrEqualThan(DomainNumber target) {
+        return isGreaterOrEqualThan(target.bigNumber);
+    }
+
+    public boolean isGreaterOrEqualThan(BigDecimal bigDecimal) {
+        return bigNumber.compareTo(bigDecimal) >= 0;
     }
 
     public boolean isLessThan(DomainNumber target) {
-        return bigNumber.compareTo(target.bigNumber) < 0;
+        return isLessThan(target.bigNumber);
+    }
+
+    public boolean isLessThan(BigDecimal bigDecimal) {
+        return bigNumber.compareTo(bigDecimal) < 0;
+    }
+
+    public boolean isLessOrEqualThan(DomainNumber target) {
+        return isLessOrEqualThan(target.bigNumber);
+    }
+
+    public boolean isLessOrEqualThan(BigDecimal bigDecimal) {
+        return bigNumber.compareTo(bigDecimal) <= 0;
     }
 
     @Override

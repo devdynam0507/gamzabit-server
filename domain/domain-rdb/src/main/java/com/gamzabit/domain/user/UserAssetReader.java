@@ -35,4 +35,14 @@ public class UserAssetReader {
 
         return userAssetEntityOptional.get().toUserAsset();
     }
+
+    public UserAsset getSpecificSymbolUserAsset(User user, Long assetId) {
+        Optional<UserAssetEntity> userAssetEntityOptional =
+            userAssetQueryRepository.findByUserIdAndAssetId(user.id(), assetId);
+        if (userAssetEntityOptional.isEmpty()) {
+            throw new AssetNotFoundException("유저의 '" + assetId + "' 자산이 존재하지 않습니다.", String.valueOf(assetId));
+        }
+
+        return userAssetEntityOptional.get().toUserAsset();
+    }
 }

@@ -3,9 +3,13 @@ package com.gamzabit.api.order.service;
 import org.springframework.stereotype.Service;
 
 import com.gamzabit.api.order.validator.OrderValidationException;
+import com.gamzabit.domain.asset.AssetPrice;
+import com.gamzabit.domain.asset.AssetReader;
 import com.gamzabit.domain.asset.DefaultAssetTypes;
+import com.gamzabit.domain.asset.vo.Assets;
 import com.gamzabit.domain.order.OrderCanceler;
 import com.gamzabit.domain.order.OrderEntity.OrderState;
+import com.gamzabit.domain.order.OrderEntity.OrderType;
 import com.gamzabit.domain.order.OrderReader;
 import com.gamzabit.domain.order.vo.Order;
 import com.gamzabit.domain.user.UserAssetFreezeProcessor;
@@ -22,6 +26,7 @@ public class OrderCancelService {
     private final UserAssetFreezeProcessor assetFreezeProcessor;
     private final UserReader userReader;
     private final OrderReader orderReader;
+    private final AssetReader assetReader;
 
     public void cancelOrder(Long userId, Long orderId) {
         User user = userReader.findUserById(userId);
@@ -35,6 +40,17 @@ public class OrderCancelService {
         }
 
         orderCanceler.cancelOrder(orderId);
-        assetFreezeProcessor.unfreeze(user, order.id(), DefaultAssetTypes.KRW.name(), order.orderPrice());
+        String assetType;
+        AssetPrice cancelPrice;
+        if (order.orderType() == OrderType.Buy) {
+            assetType = DefaultAssetTypes.KRW.name();
+            cancelPrice = order.orderPrice();
+        }
+        else {
+            Assets assets = assetReader.getSymbolById(order.assetId());
+            assetType = assets.symbolName();
+            cancelPrice = new AssetPrice(order.orderQuantity().getAmount());
+        }
+        assetFreezeProcessor.unfreeze(user, order.id(), assetType, cancelPrice);
     }
 }

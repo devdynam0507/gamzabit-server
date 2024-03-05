@@ -70,7 +70,9 @@ public class UserAssetEntity extends EntityBase {
 
     public void withdraw(AssetPrice assetPrice) {
         // 현재 자산이 가격보다 많지 않은 경우
-        if (!amount.number().isGreaterThan(assetPrice.number())) {
+        System.out.println(amount.getAmount());
+        System.out.println(assetPrice.getPrice());
+        if (!amount.number().isGreaterOrEqualThan(assetPrice.number())) {
             throw new RuntimeException("자산이 부족합니다.");
         }
         BigDecimal subtractedAmount = amount.getAmount().subtract(assetPrice.getPrice());

@@ -30,6 +30,7 @@ public class UserAssetFreezeProcessor {
         User user,
         Long orderId,
         UserAsset userAsset,
+        AssetPrice freezeAmount,
         String assetTypeString
     ) {
         UserFreezeAssetEntity userFreezeAssetEntity = new UserFreezeAssetEntity();
@@ -42,7 +43,7 @@ public class UserAssetFreezeProcessor {
         );
         userAssetProcessor.withdrawTo(
             user,
-            new AssetPrice(BigDecimal.valueOf(orderCreate.orderPriceKrw())),
+            freezeAmount,
             assetTypeString
         );
 

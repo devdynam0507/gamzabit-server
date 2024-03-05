@@ -43,4 +43,20 @@ public class UserAssetQueryRepositoryImpl implements UserAssetQueryRepository {
                 .fetchOne()
         );
     }
+
+    @Override
+    public Optional<UserAssetEntity> findByUserIdAndAssetId(Long userId, Long assetId) {
+        return Optional.ofNullable(
+            queryFactory
+                .select(userAssetEntity)
+                .from(userAssetEntity)
+                .where(
+                    userAssetEntity.userId.eq(userId)
+                        .and(
+                            userAssetEntity.asset.id.eq(assetId)
+                        )
+                )
+                .fetchOne()
+        );
+    }
 }
