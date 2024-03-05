@@ -12,6 +12,9 @@ import com.gamzabit.engine.DataSourceOrderEngine;
 import com.gamzabit.engine.OrderPostProcessor;
 import com.gamzabit.engine.OrderProcessorAdapter;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class RedisDataSourceOrderEngine implements DataSourceOrderEngine<OrderEngineIncomingMessage> {
 
     private final OrderProcessorAdapter<OrderResults, OrderEngineIncomingMessage> orderBookProcessor;
@@ -31,19 +34,18 @@ public class RedisDataSourceOrderEngine implements DataSourceOrderEngine<OrderEn
     ) {
         OrderResults orderResults = adapterProcessor.apply(orderProduceMessage);
 
-        List<OrderBookCreate> remainOrders;
-        if (orderResults.isEmpty()) {
+        List<OrderBookCreate> remainOrders = new ArrayList<>();
+        if (orderResults.concludedOrders().isEmpty()) {
             remainOrders = List.of(orderProduceMessage.toOrderBookCreationDto());
         }
-        else {
+        if (!orderResults.isEmpty()) {
             remainOrders = orderResults.orderBranches().stream()
                 .map(OrderBookOrderItem::toOrderBookCreationDto)
                 .toList();
         }
-        List<OrderTransaction> transactions = new ArrayList<>(orderResults.concludedOrders());
 
         postProcessor.handle(remainOrders);
-        sendTransactions(transactions);
+        sendTransactions(orderResults.concludedOrders());
     }
 
     public void buy(OrderEngineIncomingMessage orderMessage) {

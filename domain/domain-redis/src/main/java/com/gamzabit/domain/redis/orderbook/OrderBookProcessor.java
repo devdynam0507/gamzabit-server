@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.gamzabit.domain.redis.orderbook.dto.OrderBookCreate;
 import com.gamzabit.domain.redis.orderbook.dto.OrderBookOrderItem;
@@ -26,9 +25,9 @@ public class OrderBookProcessor {
 
     public void deleteOrder(OrderBookCreate orderBookCreateDto) {
         orderBookRepository.deleteById(orderBookCreateDto.orderId());
+        orderBookRedisQueryRepository.delete(orderBookCreateDto.toOrderBook());
     }
 
-//    @Transactional
     public void saveOrder(OrderBookCreate orderBookCreateDto) {
         log.info("save order: {}", orderBookCreateDto);
         OrderBook orderBook = orderBookCreateDto.toOrderBook();
@@ -72,6 +71,9 @@ public class OrderBookProcessor {
             // 구매: 10 판매: 20
             else {
                 BigDecimal subtractedQuantity = sellOrderAmount.subtract(buyOrderAmount);
+                if (subtractedQuantity.compareTo(BigDecimal.ZERO) == 0) {
+                    deleteOrder(sellOrder.toOrderBookCreationDto());
+                }
                 // 판매 수량이 구매 주문을 처리하고 남은 수량이 0 보다 크다면
                 if (subtractedQuantity.compareTo(BigDecimal.ZERO) > 0) {
                     // 판매 수량을 쪼개고 남은 쪼개진 주문 리스트에 추가한다.
@@ -121,6 +123,9 @@ public class OrderBookProcessor {
             // 판매 수량이 구매 수량보다 크거나 같은 경우
             else {
                 BigDecimal subtractedSellQuantity = sellOrderAmount.subtract(buyOrderAmount);
+                if (subtractedSellQuantity.compareTo(BigDecimal.ZERO) == 0) {
+                    deleteOrder(sellOrderCreate);
+                }
                 // 모두 판매되지 못했다면
                 if (subtractedSellQuantity.compareTo(BigDecimal.ZERO) > 0) {
                     // 판매 주문을 쪼개고 거래내역을 추가한다.

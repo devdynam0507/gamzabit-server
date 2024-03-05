@@ -20,6 +20,7 @@ public class OrderBookRedisRepositoryImpl implements OrderBookRedisRepository {
 
     @Override
     public Optional<OrderBook> findById(Long id) {
+        System.out.println("id: " + id);
         OrderBook orderBook = redisTemplate.<Long, OrderBook>opsForHash().get(HASH_KEY, id);
 
         return Optional.ofNullable(orderBook);
@@ -34,19 +35,19 @@ public class OrderBookRedisRepositoryImpl implements OrderBookRedisRepository {
 
     @Override
     public void save(OrderBook orderBook) {
-        redisTemplate.opsForHash().put(HASH_KEY, orderBook.getId(), orderBook);
+        redisTemplate.opsForHash().put(HASH_KEY, orderBook.getOrderId(), orderBook);
     }
 
     @Override
     public void saveAll(Collection<OrderBook> orderBooks) {
         Map<Long, OrderBook> maps = orderBooks.stream()
-            .collect(Collectors.toMap(OrderBook::getId, v -> v));
+            .collect(Collectors.toMap(OrderBook::getOrderId, v -> v));
         redisTemplate.opsForHash().putAll(HASH_KEY, maps);
     }
 
     @Override
     public void delete(OrderBook orderBook) {
-        deleteById(orderBook.getId());
+        deleteById(orderBook.getOrderId());
     }
 
     @Override

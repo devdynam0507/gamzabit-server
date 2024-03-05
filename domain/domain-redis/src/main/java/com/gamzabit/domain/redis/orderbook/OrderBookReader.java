@@ -34,7 +34,7 @@ public class OrderBookReader {
         PageRequest pageRequest =
             PageRequest.of(0, fetchSize, Sort.by(Direction.ASC, sortKey));
         List<Long> orderBookIds =
-            orderBookQueryRepository.findByIdAndOrderTypeAndAssetBuyPriceLessThan(
+            orderBookQueryRepository.findByIdAndOrderTypeAndAssetBuyPriceGreaterThanEqual(
                 assetId, "Sell", assetBuyPrice, pageRequest
             )
             .stream()
@@ -52,14 +52,14 @@ public class OrderBookReader {
      * 주문가 이상의 주문을 모두 조회합니다.
      * */
     public List<OrderBookOrderItem> getMatchedBuyOrders(Long assetId, BigDecimal assetBuyPrice) {
-        return getMatchedSellOrders(assetId, assetBuyPrice, DEFAULT_FETCH_SIZE);
+        return getMatchedBuyOrders(assetId, assetBuyPrice, DEFAULT_FETCH_SIZE);
     }
 
     public List<OrderBookOrderItem> getMatchedBuyOrders(Long assetId, BigDecimal assetBuyPrice, int fetchSize) {
         PageRequest pageRequest =
             PageRequest.of(0, fetchSize, Sort.by(Direction.DESC, sortKey));
         List<Long> orderBookIds =
-            orderBookQueryRepository.findByIdAndOrderTypeAndAssetBuyPriceGreaterThanEqual(
+            orderBookQueryRepository.findByIdAndOrderTypeAndAssetBuyPriceLessThan(
                 assetId, "Buy", assetBuyPrice, pageRequest
             )
             .stream()

@@ -22,7 +22,7 @@ public class OrderBookRedisQueryRepositoryImpl implements OrderBookRedisQueryRep
     public void save(OrderBook orderBook) {
         String key = orderBookKeyResolver.createSortedSetKey(orderBook.getOrderType(), orderBook.getId());
         String value = orderBook.getOrderId() + ":" + orderBook.getUserId();
-        long score = orderBook.getAssetBuyPrice().longValue();
+        double score = orderBook.getAssetBuyPrice().doubleValue();
 
         redisTemplate.opsForZSet().add(key, value, score);
     }
@@ -41,10 +41,11 @@ public class OrderBookRedisQueryRepositoryImpl implements OrderBookRedisQueryRep
     ) {
         String key = orderBookKeyResolver.createSortedSetKey(orderType, id);
         Set<String> orderBooks = redisTemplate.opsForZSet()
-            .rangeByScore(key, assetBuyPrice.longValue(), Integer.MAX_VALUE);
+            .rangeByScore(key, assetBuyPrice.doubleValue(), Integer.MAX_VALUE);
 
         return Objects.requireNonNull(orderBooks)
             .stream()
+            .limit(pageable.getPageSize())
             .map(value -> {
                 String[] split = value.split(":");
                 long orderId = Long.parseLong(split[0]);
@@ -61,11 +62,11 @@ public class OrderBookRedisQueryRepositoryImpl implements OrderBookRedisQueryRep
     ) {
         String key = orderBookKeyResolver.createSortedSetKey(orderType, id);
         Set<String> orderBooks = redisTemplate.opsForZSet()
-            .reverseRangeByScore(key,  assetBuyPrice.longValue(), Integer.MIN_VALUE);
+            .reverseRangeByScore(key, Integer.MIN_VALUE, assetBuyPrice.doubleValue());
 
         return Objects.requireNonNull(orderBooks)
             .stream()
-            .limit(pageable.getPageNumber())
+            .limit(pageable.getPageSize())
             .map(value -> {
                 String[] split = value.split(":");
                 long orderId = Long.parseLong(split[0]);
