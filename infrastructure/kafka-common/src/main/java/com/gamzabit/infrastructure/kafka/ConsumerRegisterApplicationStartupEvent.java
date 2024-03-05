@@ -34,7 +34,8 @@ public class ConsumerRegisterApplicationStartupEvent {
         kafkaListenerEndpoints.forEach(listenerEndpoint -> {
             kafkaListenerEndpointRegistry.registerListenerContainer(
                 listenerEndpoint, kafkaListenerContainerFactory);
-        });
+            }
+        );
         kafkaListenerEndpointRegistry.start();
     }
 }

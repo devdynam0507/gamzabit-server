@@ -38,7 +38,7 @@ public class KafkaListenerFactory {
         kafkaListenerEndpoint.setGroupId(groupId);
         kafkaListenerEndpoint.setAutoStartup(true);
         kafkaListenerEndpoint.setTopics(topic);
-        kafkaListenerEndpoint.setClientIdPrefix("consumers");
+        kafkaListenerEndpoint.setClientIdPrefix("consumers" + endpointIdIndex.get());
         kafkaListenerEndpoint.setMessageHandlerMethodFactory(messageHandlerMethodFactory);
 
         return kafkaListenerEndpoint;

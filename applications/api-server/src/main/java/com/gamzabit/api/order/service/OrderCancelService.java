@@ -2,6 +2,7 @@ package com.gamzabit.api.order.service;
 
 import org.springframework.stereotype.Service;
 
+import com.gamzabit.api.order.service.dto.OrderCancelMessage;
 import com.gamzabit.api.order.validator.OrderValidationException;
 import com.gamzabit.domain.asset.AssetPrice;
 import com.gamzabit.domain.asset.AssetReader;
@@ -27,6 +28,7 @@ public class OrderCancelService {
     private final UserReader userReader;
     private final OrderReader orderReader;
     private final AssetReader assetReader;
+    private final OrderCancelProducer orderCancelProducer;
 
     public void cancelOrder(Long userId, Long orderId) {
         User user = userReader.findUserById(userId);
@@ -52,5 +54,11 @@ public class OrderCancelService {
             cancelPrice = new AssetPrice(order.orderQuantity().getAmount());
         }
         assetFreezeProcessor.unfreeze(user, order.id(), assetType, cancelPrice);
+        orderCancelProducer.send(new OrderCancelMessage(
+            order.assetId(),
+            order.userId(),
+            order.id(),
+            order.orderType()
+        ));
     }
 }

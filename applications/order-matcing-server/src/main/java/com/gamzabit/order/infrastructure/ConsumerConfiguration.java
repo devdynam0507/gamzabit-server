@@ -1,13 +1,12 @@
 package com.gamzabit.order.infrastructure;
 
-import java.util.Set;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gamzabit.infrastructure.kafka.KafkaConsumerRegistrar;
-import com.gamzabit.infrastructure.kafka.KafkaMessageListener;
+import com.gamzabit.order.consumers.OrderCancelConsumer;
+import com.gamzabit.order.consumers.OrderConsumer;
 
 @Configuration
 public class ConsumerConfiguration {
@@ -18,11 +17,10 @@ public class ConsumerConfiguration {
     }
 
     @Bean
-    KafkaConsumerRegistrar registrar(Set<KafkaMessageListener<String>> consumers) {
+    KafkaConsumerRegistrar registrar(OrderConsumer orderConsumer, OrderCancelConsumer orderCancelConsumer) {
         return consumerBuilder -> {
-            consumers.forEach(consumer -> {
-                consumerBuilder.listener("created_order", "group_1", consumer, String.class);
-            });
+            consumerBuilder.listener("created_order", "group_1", orderConsumer, String.class);
+            consumerBuilder.listener("cancel_order", "group_1", orderCancelConsumer, String.class);
         };
     }
 }
