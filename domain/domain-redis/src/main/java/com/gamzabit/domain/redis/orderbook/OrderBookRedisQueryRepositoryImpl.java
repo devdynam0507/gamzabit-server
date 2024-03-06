@@ -76,4 +76,21 @@ public class OrderBookRedisQueryRepositoryImpl implements OrderBookRedisQueryRep
             })
             .toList();
     }
+
+    @Override
+    public List<OrderBookSortedSetKeyValue> findByIdAndOrderTypeAndPrice(Long id, String orderType, BigDecimal price) {
+        String key = orderBookKeyResolver.createSortedSetKey(orderType, id);
+        long priceLong = price.longValue();
+        Set<String> orderBooks = redisTemplate.opsForZSet().rangeByScore(key, priceLong, priceLong);
+
+        return Objects.requireNonNull(orderBooks).stream()
+            .map(value -> {
+                String[] split = value.split(":");
+                long orderId = Long.parseLong(split[0]);
+                long userId = Long.parseLong(split[1]);
+
+                return new OrderBookSortedSetKeyValue(orderId, userId);
+            })
+            .toList();
+    }
 }

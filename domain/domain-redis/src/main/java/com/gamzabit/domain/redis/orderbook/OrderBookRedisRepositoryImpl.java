@@ -20,7 +20,6 @@ public class OrderBookRedisRepositoryImpl implements OrderBookRedisRepository {
 
     @Override
     public Optional<OrderBook> findById(Long id) {
-        System.out.println("id: " + id);
         OrderBook orderBook = redisTemplate.<Long, OrderBook>opsForHash().get(HASH_KEY, id);
 
         return Optional.ofNullable(orderBook);

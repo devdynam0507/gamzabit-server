@@ -18,4 +18,6 @@ public interface OrderBookRedisQueryRepository {
     List<OrderBookSortedSetKeyValue> findByIdAndOrderTypeAndAssetBuyPriceLessThan(
         Long id, String orderType, BigDecimal assetBuyPrice, Pageable pageable
     );
+
+    List<OrderBookSortedSetKeyValue> findByIdAndOrderTypeAndPrice(Long id, String orderType, BigDecimal price);
 }
