@@ -11,6 +11,9 @@ import com.gamzabit.domain.redis.orderbook.dto.OrderTransaction;
 import com.gamzabit.engine.DataSourceOrderEngine;
 import com.gamzabit.engine.OrderPostProcessor;
 import com.gamzabit.engine.OrderProcessorAdapter;
+import com.gamzabit.order.service.OrderTransactionProducer;
+import com.gamzabit.order.service.dto.OrderTransactionItem;
+import com.gamzabit.order.service.dto.OrderTransactionMessage;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,13 +22,16 @@ public class RedisDataSourceOrderEngine implements DataSourceOrderEngine<OrderEn
 
     private final OrderProcessorAdapter<OrderResults, OrderEngineIncomingMessage> orderBookProcessor;
     private final OrderPostProcessor<OrderBookCreate> postProcessor;
+    private final OrderTransactionProducer orderTransactionProducer;
 
     public RedisDataSourceOrderEngine(
         OrderProcessorAdapter<OrderResults, OrderEngineIncomingMessage> orderBookProcessor,
-        OrderPostProcessor<OrderBookCreate> postProcessor
+        OrderPostProcessor<OrderBookCreate> postProcessor,
+        OrderTransactionProducer orderTransactionProducer
     ) {
         this.orderBookProcessor = orderBookProcessor;
         this.postProcessor = postProcessor;
+        this.orderTransactionProducer = orderTransactionProducer;
     }
 
     void process(
@@ -58,6 +64,22 @@ public class RedisDataSourceOrderEngine implements DataSourceOrderEngine<OrderEn
     }
 
     public void sendTransactions(List<OrderTransaction> transactions) {
-        // TODO: send transaction alert
+        if (transactions.isEmpty()) {
+            return;
+        }
+        List<OrderTransactionItem> transactionMessageItems = transactions.stream()
+            .map(transaction -> new OrderTransactionItem(
+                transaction.userId(),
+                transaction.orderId(),
+                transaction.assetId(),
+                transaction.orderState(),
+                transaction.orderType(),
+                transaction.concludedAmount(),
+                transaction.concludedPrice(),
+                transaction.concludedTime()
+            ))
+            .toList();
+
+        orderTransactionProducer.send(new OrderTransactionMessage(transactionMessageItems));
     }
 }

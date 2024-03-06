@@ -20,6 +20,11 @@ public class UserAssetFreezeProcessor {
     private final UserAssetProcessor userAssetProcessor;
 
     @Transactional
+    public void unfreeze(User user, Long orderId, Long assetId, AssetPrice assetPrice) {
+
+    }
+
+    @Transactional
     public void unfreeze(User user, Long orderId, String assetTypeString, AssetPrice assetPrice) {
         userAssetProcessor.depositTo(user, assetPrice, assetTypeString);
         userFreezeAssetRepository.deleteByOrderId(orderId);

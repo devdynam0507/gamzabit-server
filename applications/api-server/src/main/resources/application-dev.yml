@@ -20,9 +20,15 @@ spring:
   kafka:
     producer:
       enabled: true
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: localhost:29092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      enabled: true
+      bootstrap-servers: localhost:29092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      group-id: group_1
 
 logging:
   level:

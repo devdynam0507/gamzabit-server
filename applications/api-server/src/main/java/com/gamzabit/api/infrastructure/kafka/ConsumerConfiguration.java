@@ -1,13 +1,12 @@
-package com.gamzabit.order.infrastructure;
+package com.gamzabit.api.infrastructure.kafka;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.gamzabit.api.order.consumer.OrderTransactionConsumer;
 import com.gamzabit.infrastructure.kafka.KafkaConsumerRegistrar;
-import com.gamzabit.order.consumers.OrderCancelConsumer;
-import com.gamzabit.order.consumers.OrderConsumer;
 
 @Configuration
 public class ConsumerConfiguration {
@@ -21,10 +20,9 @@ public class ConsumerConfiguration {
     }
 
     @Bean
-    KafkaConsumerRegistrar registrar(OrderConsumer orderConsumer, OrderCancelConsumer orderCancelConsumer) {
+    KafkaConsumerRegistrar registrar(OrderTransactionConsumer orderTransactionConsumer) {
         return consumerBuilder -> {
-            consumerBuilder.listener("created_order", "group_1", orderConsumer, String.class);
-            consumerBuilder.listener("cancel_order", "group_1", orderCancelConsumer, String.class);
+            consumerBuilder.listener("concluded_order", "group_1", orderTransactionConsumer, String.class);
         };
     }
 }

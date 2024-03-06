@@ -45,6 +45,10 @@ public class AssetEntity extends EntityBase {
         this.listedType = listedType;
     }
 
+    public void changePrice(AssetPrice assetPrice) {
+        this.assetPrice = assetPrice;
+    }
+
     public void switchListed(ListedType listedType) {
         this.listedType = listedType;
     }
